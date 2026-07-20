@@ -14,7 +14,7 @@ export default function Footer() {
           
           {/* Brand Info */}
           <div className="space-y-4 md:col-span-1">
-            <h3 className="font-serif text-3xl tracking-[0.25em] text-gold">SÉRA</h3>
+            <h3 className="font-serif text-3xl tracking-[0.25em] text-gold">Rich Inn Palace</h3>
             <p className="text-xs tracking-[0.1em] text-text-gray font-light max-w-xs leading-relaxed">
               A quiet sanctuary where Jaipur&apos;s heritage is slowly rewritten. Twenty-eight keys of unhurried luxury.
             </p>
@@ -144,7 +144,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-border-dark mt-16 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-[10px] tracking-[0.15em] text-text-gray font-light">
-            &copy; {currentYear} SÉRA RESORTS. ALL RIGHTS RESERVED.
+            &copy; {currentYear} RICH INN PALACE. ALL RIGHTS RESERVED.
           </p>
           <div className="flex space-x-6 text-[10px] tracking-[0.15em] text-text-gray font-light">
             <Link href="/privacy" className="hover:text-gold transition-colors duration-300">

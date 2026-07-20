@@ -5,7 +5,7 @@ export default function Loading() {
     <div className="bg-bg-dark min-h-screen flex flex-col items-center justify-center font-sans space-y-6">
       <div className="flex flex-col items-center space-y-3">
         <span className="font-serif text-3xl md:text-4xl tracking-[0.3em] text-gold font-light animate-pulse">
-          SÉRA
+          Rich Inn Palace
         </span>
         <span className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-light">
           Preparing your sanctuary...

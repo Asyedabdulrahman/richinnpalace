@@ -113,7 +113,7 @@ function BookingContent() {
             Welcome to Stillness.
           </h1>
           <p className="font-sans text-xs md:text-sm text-text-gray font-light leading-relaxed max-w-sm mx-auto">
-            Your booking at SÉRA has been registered. An invitation letter with details of your private airport transfer has been sent to your email.
+            Your booking at Rich Inn Palace has been registered. An invitation letter with details of your private airport transfer has been sent to your email.
           </p>
         </div>
 

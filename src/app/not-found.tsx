@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Sanctuary Not Found | SÉRA Jaipur",
+  title: "Sanctuary Not Found | Rich Inn Palace Jaipur",
   description: "The chamber you are looking for does not exist or has been quietly archived.",
 };
 

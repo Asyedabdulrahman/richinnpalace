@@ -26,10 +26,10 @@ export async function generateMetadata({ params }: Props) {
   if (!room) return {};
 
   return {
-    title: `${room.name} | SÉRA Jaipur`,
+    title: `${room.name} | Rich Inn Palace Jaipur`,
     description: room.longDescription.slice(0, 155) + "...",
     openGraph: {
-      title: `${room.name} | SÉRA Jaipur`,
+      title: `${room.name} | Rich Inn Palace Jaipur`,
       description: room.longDescription.slice(0, 155) + "...",
       images: [{ url: room.image }],
     },

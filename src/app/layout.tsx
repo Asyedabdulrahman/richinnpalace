@@ -23,30 +23,30 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://serahotel.com"),
   title: {
-    default: "SÉRA | Luxury Hotel & Sanctuary Jaipur",
-    template: "%s | SÉRA Jaipur",
+    default: "Rich Inn Palace | Luxury Hotel & Sanctuary Jaipur",
+    template: "%s | Rich Inn Palace Jaipur",
   },
-  description: "Experience unhurried luxury at SÉRA Jaipur. A quiet retreat of twenty-eight keys and dedicated butler care set against the historical Aravalli hills.",
-  keywords: ["Luxury Hotel Jaipur", "Boutique Resort Rajasthan", "Sera Hotel Jaipur", "Jaipur Luxury Stay", "Aravalli Hills Resort", "Heritage Sanctuary Jaipur"],
-  authors: [{ name: "SÉRA Hospitality Group" }],
-  creator: "SÉRA Hospitality Group",
-  publisher: "SÉRA Hospitality Group",
+  description: "Experience unhurried luxury at Rich Inn Palace Jaipur. A quiet retreat of twenty-eight keys and dedicated butler care set against the historical Aravalli hills.",
+  keywords: ["Luxury Hotel Jaipur", "Boutique Resort Rajasthan", "Rich Inn Palace Hotel Jaipur", "Jaipur Luxury Stay", "Aravalli Hills Resort", "Heritage Sanctuary Jaipur"],
+  authors: [{ name: "Rich Inn Palace Hospitality Group" }],
+  creator: "Rich Inn Palace Hospitality Group",
+  publisher: "Rich Inn Palace Hospitality Group",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
   openGraph: {
-    title: "SÉRA | Luxury Hotel & Sanctuary Jaipur",
-    description: "Experience unhurried luxury at SÉRA Jaipur. A quiet retreat of twenty-eight keys and dedicated butler care.",
+    title: "Rich Inn Palace | Luxury Hotel & Sanctuary Jaipur",
+    description: "Experience unhurried luxury at Rich Inn Palace Jaipur. A quiet retreat of twenty-eight keys and dedicated butler care.",
     url: "https://serahotel.com",
-    siteName: "SÉRA Hotel",
+    siteName: "Rich Inn Palace Hotel",
     images: [
       {
         url: "/images/photo1.avif",
         width: 1200,
         height: 630,
-        alt: "SÉRA Jaipur Luxury Sanctuary Suite",
+        alt: "Rich Inn Palace Jaipur Luxury Sanctuary Suite",
       },
     ],
     locale: "en_US",
@@ -54,8 +54,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "SÉRA | Luxury Hotel & Sanctuary Jaipur",
-    description: "Experience unhurried luxury at SÉRA Jaipur. A quiet retreat of twenty-eight keys and dedicated butler care.",
+    title: "Rich Inn Palace | Luxury Hotel & Sanctuary Jaipur",
+    description: "Experience unhurried luxury at Rich Inn Palace Jaipur. A quiet retreat of twenty-eight keys and dedicated butler care.",
     images: ["/images/photo1.avif"],
   },
   alternates: {
@@ -77,8 +77,8 @@ export default function RootLayout({
       {
         "@type": "Hotel",
         "@id": "https://serahotel.com/#hotel",
-        "name": "SÉRA Resorts & Sanctuary",
-        "description": "Experience unhurried luxury at SÉRA Jaipur. A quiet retreat of twenty-eight keys and dedicated butler care.",
+        "name": "Rich Inn Palace Resorts & Sanctuary",
+        "description": "Experience unhurried luxury at Rich Inn Palace Jaipur. A quiet retreat of twenty-eight keys and dedicated butler care.",
         "image": "https://serahotel.com/images/photo1.avif",
         "telephone": "+91 141 555 0198",
         "email": "reservations@serahotel.com",
@@ -102,7 +102,7 @@ export default function RootLayout({
       {
         "@type": "Organization",
         "@id": "https://serahotel.com/#organization",
-        "name": "SÉRA Hotels Group",
+        "name": "Rich Inn Palace Hotels Group",
         "url": "https://serahotel.com",
         "logo": "https://serahotel.com/images/logo.png"
       }

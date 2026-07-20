@@ -18,13 +18,13 @@ export interface Room {
 }
 
 export const hotelDetails = {
-  name: "SÉRA",
+  name: "Rich Inn Palace",
   tagline: "Luxury, redefined.",
   subTitle: "ESTD. 2012 | JAIPUR · IN",
   description: "A quiet retreat where old craft, still hands, and slow evenings become the story you take home.",
   phone: "+91 141 555 0198",
   email: "reservations@serahotel.com",
-  address: "Séra Resorts, NH-8, Amber Road, Jaipur, Rajasthan, 302028, India",
+  address: "Rich Inn Palace, NH-8, Amber Road, Jaipur, Rajasthan, 302028, India",
   googleMapsLink: "https://maps.google.com",
 };
 
@@ -73,7 +73,7 @@ export const rooms: Room[] = [
     faqs: [
       {
         question: "Is airport pickup included with this room?",
-        answer: "Yes, all room bookings at SÉRA include complimentary private airport transfers in our luxury electric sedans."
+        answer: "Yes, all room bookings at Rich Inn Palace include complimentary private airport transfers in our luxury electric sedans."
       },
       {
         question: "Can we add an extra bed in the Haveli Room?",
@@ -281,7 +281,7 @@ export const testimonials = [
     verified: true,
   },
   {
-    quote: "I came for a weekend and stayed for a month. The quiet is absolute. The food is clean and comforting, tasting of the soil here. Séra is an sanctuary for the creative spirit.",
+    quote: "I came for a weekend and stayed for a month. The quiet is absolute. The food is clean and comforting, tasting of the soil here. Rich Inn Palace is a sanctuary for the creative spirit.",
     author: "Julian Thorne",
     role: "Creative Director",
     rating: 5,

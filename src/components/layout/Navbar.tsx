@@ -68,7 +68,7 @@ export default function Navbar() {
         <div className="flex justify-center">
           <Link href="/" className="flex flex-col items-center">
             <span className="font-serif text-2xl lg:text-3xl tracking-[0.25em] text-text-offwhite font-light transition-transform duration-300 hover:scale-[1.02]">
-              SÉRA
+              Rich Inn Palace
             </span>
           </Link>
         </div>
@@ -114,7 +114,7 @@ export default function Navbar() {
         {/* Mobile Center Logo */}
         <Link href="/" className="flex flex-col items-center">
           <span className="font-serif text-xl tracking-[0.2em] text-text-offwhite font-light">
-            SÉRA
+            Rich Inn Palace
           </span>
         </Link>
 
