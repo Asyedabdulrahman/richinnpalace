@@ -1,3 +1,10 @@
+export interface Branch {
+  id: string;
+  name: string;
+  description: string;
+  address: string;
+}
+
 export interface Room {
   id: string;
   slug: string;
@@ -15,6 +22,7 @@ export interface Room {
   specs: { label: string; value: string }[];
   faqs: { question: string; answer: string }[];
   attractions: { name: string; distance: string }[];
+  branches: Branch[];
 }
 
 export const hotelDetails = {
@@ -29,17 +37,17 @@ export const hotelDetails = {
 };
 
 export const stats = [
-  { value: "5.0", label: "GOOGLE RATING", subLabel: "★★★★★" },
-  { value: "12,400+", label: "VERIFIED GUESTS", subLabel: "TRUSTED EXPERIENCES" },
-  { value: "13", label: "YEARS OF SERVICE", subLabel: "ESTABLISHED 2012" },
-  { value: "Certified", label: "LUXURY HOSPITALITY", subLabel: "EXCELLENCE AWARDS" },
+  { value: "5.0", label: "Customer Reviews", subLabel: "★★★★★" },
+  { value: "12,000+", label: "SATISFIED GUESTS", subLabel: "TRUSTED EXPERIENCES" },
+  { value: "25", label: "YEARS OF SERVICE", subLabel: "ESTABLISHED 2001" },
+  { value: "Award-Winning", label: "EXCELLENT HOSPITALITY", subLabel: "EXCELLENCE AWARDS" },
 ];
 
 export const rooms: Room[] = [
   {
     id: "haveli-room",
     slug: "haveli-room",
-    name: "Haveli Room",
+    name: "T.Nagar",
     tag: "COURTYARD VIEW",
     price: 12800,
     priceDisplay: "₹12,800",
@@ -89,12 +97,26 @@ export const rooms: Room[] = [
       { name: "Jal Mahal (Water Palace)", distance: "10 mins drive" },
       { name: "Hawa Mahal (Wind Palace)", distance: "25 mins drive" },
       { name: "City Palace", distance: "25 mins drive" }
+    ],
+    branches: [
+      {
+        id: "tnagar-grand",
+        name: "Rich Inn Palace — T.Nagar Grand",
+        description: "Our landmark heritage wing featuring high arched ceilings, located on G.N. Chetty Road.",
+        address: "No. 12, G.N. Chetty Road, T. Nagar, Chennai, Tamil Nadu 600017"
+      },
+      {
+        id: "tnagar-south",
+        name: "Rich Inn Palace — T.Nagar South",
+        description: "A contemporary luxury retreat with customized butler service, located near Venkatnarayana Road.",
+        address: "No. 45, Venkatnarayana Road, T. Nagar, Chennai, Tamil Nadu 600017"
+      }
     ]
   },
   {
     id: "garden-suite",
     slug: "garden-suite",
-    name: "Garden Suite",
+    name: "Vadapalani",
     tag: "PRIVATE GARDEN",
     price: 18500,
     priceDisplay: "₹18,500",
@@ -139,12 +161,26 @@ export const rooms: Room[] = [
       { name: "Amer Fort", distance: "15 mins drive" },
       { name: "Nahargarh Fort Hills", distance: "20 mins drive" },
       { name: "Jaipur Old City Markets", distance: "30 mins drive" }
+    ],
+    branches: [
+      {
+        id: "vadapalani-central",
+        name: "Rich Inn Palace — Vadapalani Central",
+        description: "An urban sanctuary with lush inner courtyards, located off Arcot Road.",
+        address: "No. 88, Arcot Road, Vadapalani, Chennai, Tamil Nadu 600026"
+      },
+      {
+        id: "vadapalani-west",
+        name: "Rich Inn Palace — Vadapalani West",
+        description: "Private garden suites and rooftop lounges offering absolute privacy, located on Saligramam Link Road.",
+        address: "No. 15, Saligramam Link Road, Vadapalani, Chennai, Tamil Nadu 600026"
+      }
     ]
   },
   {
     id: "signature-sanctuary",
     slug: "signature-sanctuary",
-    name: "Signature Sanctuary",
+    name: "Anna Nagar",
     tag: "PLUNGE POOL",
     price: 26000,
     priceDisplay: "₹26,000",
@@ -189,6 +225,20 @@ export const rooms: Room[] = [
       { name: "Amer Fort Trek", distance: "Starts at property gates" },
       { name: "Jaigarh Fort", distance: "20 mins drive" },
       { name: "Galta Ji (Monkey Temple)", distance: "35 mins drive" }
+    ],
+    branches: [
+      {
+        id: "annanagar-club",
+        name: "Rich Inn Palace — Anna Nagar Club",
+        description: "Exclusive boutique estate featuring custom plunge pool suites, located on 2nd Avenue.",
+        address: "No. 102, 2nd Avenue, Anna Nagar, Chennai, Tamil Nadu 600040"
+      },
+      {
+        id: "annanagar-heights",
+        name: "Rich Inn Palace — Anna Nagar Heights",
+        description: "Premium penthouses with private decks and panoramic city skyline views, located on 5th Avenue.",
+        address: "No. 7, 5th Avenue, Anna Nagar, Chennai, Tamil Nadu 600040"
+      }
     ]
   },
   {
@@ -233,6 +283,20 @@ export const rooms: Room[] = [
     attractions: [
       { name: "City Palace", distance: "25 mins drive" },
       { name: "Amer Fort", distance: "15 mins drive" }
+    ],
+    branches: [
+      {
+        id: "royal-palace-jaipur",
+        name: "Rich Inn Palace — Royal Amber",
+        description: "Our signature mountain-view estate set against the ancient Aravalli Hills.",
+        address: "NH-8, Amber Road, Jaipur, Rajasthan 302028"
+      },
+      {
+        id: "royal-palace-city",
+        name: "Rich Inn Palace — Heritage Club",
+        description: "A premium private dining sanctuary near the historic City Palace.",
+        address: "Tonk Road, Jaipur, Rajasthan 302015"
+      }
     ]
   }
 ];

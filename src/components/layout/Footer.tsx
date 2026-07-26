@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
-import { hotelDetails } from "@/lib/data";
+import { hotelDetails, rooms } from "@/lib/data";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -10,56 +10,84 @@ export default function Footer() {
   return (
     <footer className="bg-surface-dark border-t border-border-dark text-text-offwhite font-sans mt-auto">
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
           
           {/* Brand Info */}
-          <div className="space-y-4 md:col-span-1">
-            <h3 className="font-serif text-3xl tracking-[0.25em] text-gold">Rich Inn Palace</h3>
-            <p className="text-xs tracking-[0.1em] text-text-gray font-light max-w-xs leading-relaxed">
-              A quiet sanctuary where Jaipur&apos;s heritage is slowly rewritten. Twenty-eight keys of unhurried luxury.
-            </p>
-            <div className="flex space-x-4 pt-2">
+          <div className="space-y-6 lg:col-span-1">
+            <div className="space-y-4">
+              <h3 className="font-serif text-3xl tracking-[0.25em] text-gold">Rich Inn Palace</h3>
+              <p className="text-xs tracking-[0.1em] text-text-gray font-light max-w-xs leading-relaxed">
+                A quiet sanctuary where Jaipur&apos;s heritage is slowly rewritten. Twenty-eight keys of unhurried luxury.
+              </p>
+            </div>
+
+            {/* Instagram & Google Badges */}
+            <div className="flex flex-col space-y-3 pt-2">
+              {/* Instagram Badge */}
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Follow us on Instagram"
-                className="text-text-gray hover:text-gold transition-colors duration-300"
+                className="flex items-center space-x-3 bg-bg-dark/40 border border-border-dark/65 rounded-xl p-2.5 hover:border-gold/40 hover:bg-gold/[0.02] transition-all duration-300 group max-w-[200px]"
               >
-                <svg
-                  className="w-[18px] h-[18px]"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.25"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-                </svg>
+                <div className="w-8 h-8 rounded-lg bg-gold/10 border border-gold/25 flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-bg-dark transition-all duration-300 shrink-0">
+                  <svg
+                    className="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                  </svg>
+                </div>
+                <div className="flex flex-col text-left">
+                  <span className="text-[10px] uppercase tracking-[0.05em] font-sans font-semibold text-text-offwhite group-hover:text-gold transition-colors">Instagram</span>
+                  <span className="text-[9px] text-text-gray/65">@richinnpalace</span>
+                </div>
               </a>
+
+              {/* Google Reviews Badge */}
               <a
-                href="https://facebook.com"
+                href="https://google.com"
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Follow us on Facebook"
-                className="text-text-gray hover:text-gold transition-colors duration-300"
+                className="flex items-center space-x-3 bg-bg-dark/40 border border-border-dark/65 rounded-xl p-2.5 hover:border-gold/40 hover:bg-gold/[0.02] transition-all duration-300 group max-w-[200px]"
               >
-                <svg
-                  className="w-[18px] h-[18px]"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.25"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                </svg>
+                <div className="w-8 h-8 rounded-lg bg-gold/10 border border-gold/25 flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-bg-dark transition-all duration-300 shrink-0 font-sans font-semibold text-sm">
+                  G
+                </div>
+                <div className="flex flex-col text-left">
+                  <span className="text-[10px] uppercase tracking-[0.05em] font-sans font-semibold text-text-offwhite group-hover:text-gold transition-colors">Google Review</span>
+                  <span className="text-[9px] text-gold font-medium tracking-wide">5.0 ★★★★★</span>
+                </div>
               </a>
             </div>
+          </div>
+
+          {/* Branches List Column */}
+          <div className="space-y-4">
+            <h4 className="text-xs uppercase tracking-[0.2em] text-gold font-medium">Our Branches</h4>
+            <ul className="space-y-3.5">
+              {rooms.flatMap(r => r.branches).map((branch) => {
+                const associatedRoom = rooms.find(r => r.branches.some(b => b.id === branch.id));
+                return (
+                  <li key={branch.id}>
+                    <Link
+                      href={`/rooms/${associatedRoom?.slug}?branch=${branch.id}`}
+                      className="text-[11px] tracking-[0.05em] text-text-gray hover:text-gold transition-colors duration-300 block"
+                    >
+                      <span className="block font-medium text-text-offwhite/90">{branch.name.split(" — ")[1] || branch.name}</span>
+                      <span className="text-[9px] text-text-gray/50 block mt-0.5">{branch.address.split(",")[1]?.trim() || branch.address.split(",")[0]}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
 
           {/* Quick Navigation */}
@@ -99,19 +127,19 @@ export default function Footer() {
             <h4 className="text-xs uppercase tracking-[0.2em] text-gold font-medium">Enquiries</h4>
             <ul className="space-y-3 text-xs tracking-[0.1em] text-text-gray font-light">
               <li className="flex items-center space-x-3">
-                <Phone size={14} className="text-gold shrink-0" />
+                <Phone size={13} className="text-gold shrink-0" />
                 <a href={`tel:${hotelDetails.phone.replace(/\s+/g, "")}`} className="hover:text-gold transition-colors duration-300">
                   {hotelDetails.phone}
                 </a>
               </li>
               <li className="flex items-center space-x-3">
-                <Mail size={14} className="text-gold shrink-0" />
+                <Mail size={13} className="text-gold shrink-0" />
                 <a href={`mailto:${hotelDetails.email}`} className="hover:text-gold transition-colors duration-300">
                   {hotelDetails.email}
                 </a>
               </li>
               <li className="flex items-start space-x-3 leading-relaxed">
-                <MapPin size={14} className="text-gold shrink-0 mt-0.5" />
+                <MapPin size={13} className="text-gold shrink-0 mt-0.5" />
                 <span>{hotelDetails.address}</span>
               </li>
             </ul>

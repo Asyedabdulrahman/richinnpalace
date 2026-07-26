@@ -22,6 +22,7 @@ function BookingContent() {
 
   // State initialized from search params or defaults
   const [selectedRoomId, setSelectedRoomId] = useState("");
+  const [selectedBranchId, setSelectedBranchId] = useState("");
   const [checkIn, setCheckIn] = useState(getTomorrowString(1));
   const [checkOut, setCheckOut] = useState(getTomorrowString(2));
   const [guests, setGuests] = useState(2);
@@ -38,22 +39,44 @@ function BookingContent() {
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [bookingReference, setBookingReference] = useState("");
 
+  const handleRoomChange = (roomId: string) => {
+    setSelectedRoomId(roomId);
+    const newRoom = rooms.find((r) => r.id === roomId);
+    if (newRoom && newRoom.branches && newRoom.branches.length > 0) {
+      setSelectedBranchId(newRoom.branches[0].id);
+    } else {
+      setSelectedBranchId("");
+    }
+  };
+
   // Sync state with search params on load
   useEffect(() => {
     const roomParam = searchParams.get("room");
     const checkinParam = searchParams.get("checkin");
     const checkoutParam = searchParams.get("checkout");
     const guestsParam = searchParams.get("guests");
+    const branchParam = searchParams.get("branch");
 
+    let activeRoomId = roomParam || "";
     if (roomParam && rooms.some((r) => r.id === roomParam)) {
       setSelectedRoomId(roomParam);
+      activeRoomId = roomParam;
     } else if (rooms.length > 0) {
       setSelectedRoomId(rooms[0].id);
+      activeRoomId = rooms[0].id;
     }
 
     if (checkinParam) setCheckIn(checkinParam);
     if (checkoutParam) setCheckOut(checkoutParam);
     if (guestsParam) setGuests(parseInt(guestsParam) || 2);
+
+    const activeRoom = rooms.find((r) => r.id === activeRoomId) || rooms[0];
+    if (activeRoom && activeRoom.branches && activeRoom.branches.length > 0) {
+      const isValidBranch = activeRoom.branches.some((b) => b.id === branchParam);
+      setSelectedBranchId(isValidBranch ? (branchParam as string) : activeRoom.branches[0].id);
+    } else {
+      setSelectedBranchId("");
+    }
   }, [searchParams]);
 
   // Recalculate nights when dates change
@@ -70,6 +93,7 @@ function BookingContent() {
   }, [checkIn, checkOut]);
 
   const selectedRoom = rooms.find((r) => r.id === selectedRoomId) || rooms[0];
+  const selectedBranch = selectedRoom?.branches?.find((b) => b.id === selectedBranchId) || selectedRoom?.branches?.[0];
 
   // Pricing calculations
   const basePrice = selectedRoom ? selectedRoom.price : 0;
@@ -127,6 +151,12 @@ function BookingContent() {
             <span className="text-text-gray/70">Sanctuary</span>
             <span className="text-text-offwhite">{selectedRoom?.name}</span>
           </div>
+          {selectedBranch && (
+            <div className="flex justify-between border-b border-border-dark/40 pb-2">
+              <span className="text-text-gray/70">Branch Location</span>
+              <span className="text-text-offwhite">{selectedBranch.name.split(" — ")[1] || selectedBranch.name}</span>
+            </div>
+          )}
           <div className="flex justify-between border-b border-border-dark/40 pb-2">
             <span className="text-text-gray/70">Dates</span>
             <span className="text-text-offwhite">{checkIn} to {checkOut}</span>
@@ -179,8 +209,8 @@ function BookingContent() {
               </label>
               <select
                 value={selectedRoomId}
-                onChange={(e) => setSelectedRoomId(e.target.value)}
-                className="bg-bg-dark border border-border-dark rounded-lg p-3 text-xs text-text-offwhite font-sans focus:outline-none focus:border-gold transition-colors w-full cursor-pointer appearance-none"
+                onChange={(e) => handleRoomChange(e.target.value)}
+                className="bg-bg-dark border border-border-dark rounded-lg p-3 text-xs text-text-offwhite font-sans focus:outline-none focus:border-gold transition-colors w-full cursor-pointer appearance-none animate-none"
               >
                 {rooms.map((room) => (
                   <option key={room.id} value={room.id}>
@@ -189,6 +219,26 @@ function BookingContent() {
                 ))}
               </select>
             </div>
+
+            {/* Branch selector */}
+            {selectedRoom && selectedRoom.branches && selectedRoom.branches.length > 0 && (
+              <div className="flex flex-col space-y-1.5 mt-4">
+                <label className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium">
+                  Select Branch Location
+                </label>
+                <select
+                  value={selectedBranchId}
+                  onChange={(e) => setSelectedBranchId(e.target.value)}
+                  className="bg-bg-dark border border-border-dark rounded-lg p-3 text-xs text-text-offwhite font-sans focus:outline-none focus:border-gold transition-colors w-full cursor-pointer appearance-none animate-none"
+                >
+                  {selectedRoom.branches.map((branch) => (
+                    <option key={branch.id} value={branch.id}>
+                      {branch.name.split(" — ")[1] || branch.name} ({branch.address.split(",")[0]})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             {/* Dates */}
             <div className="grid grid-cols-2 gap-4">
@@ -366,6 +416,11 @@ function BookingContent() {
                   <h4 className="font-serif text-lg text-text-offwhite font-light">
                     {selectedRoom.name}
                   </h4>
+                  {selectedBranch && (
+                    <p className="text-[10px] text-gold font-sans font-medium tracking-wide uppercase">
+                      {selectedBranch.name.split(" — ")[1] || selectedBranch.name}
+                    </p>
+                  )}
                   <p className="text-[10px] text-text-gray font-sans font-light">
                     {selectedRoom.size} · Max occupancy {selectedRoom.guests}
                   </p>

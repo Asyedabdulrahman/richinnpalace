@@ -20,9 +20,9 @@ export default function GallerySection() {
     <section
       ref={containerRef}
       id="gallery"
-      className="py-24 md:py-32 bg-bg-dark border-b border-border-dark overflow-hidden"
+      className="py-12 md:py-16 bg-bg-dark border-b border-border-dark overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 mb-12">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 mb-8">
         <span className="text-[10px] md:text-xs uppercase tracking-[0.25em] text-gold font-sans font-medium mb-3 block">
           § 04 · GALLERY
         </span>
@@ -37,7 +37,7 @@ export default function GallerySection() {
           {galleryImages.map((img, idx) => (
             <div
               key={idx}
-              className="w-[70vw] sm:w-[45vw] md:w-[32vw] aspect-[3/4] shrink-0 snap-start rounded-2xl overflow-hidden relative group"
+              className="w-[70vw] sm:w-[45vw] md:w-[32vw] aspect-[16/10] shrink-0 snap-start rounded-2xl overflow-hidden relative group"
             >
               {/* Inner Parallax Wrap */}
               <motion.div style={{ scale }} className="relative w-full h-full">

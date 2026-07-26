@@ -8,9 +8,10 @@ import { Calendar, Users, Info, ShieldCheck } from "lucide-react";
 interface StickyBookingPanelProps {
   roomPrice: number;
   roomId: string;
+  selectedBranchId?: string;
 }
 
-export default function StickyBookingPanel({ roomPrice, roomId }: StickyBookingPanelProps) {
+export default function StickyBookingPanel({ roomPrice, roomId, selectedBranchId }: StickyBookingPanelProps) {
   const router = useRouter();
 
   // Get default dates (tomorrow and day after)
@@ -45,8 +46,9 @@ export default function StickyBookingPanel({ roomPrice, roomId }: StickyBookingP
 
   const handleBookNow = () => {
     // Navigate to booking page with details prefilled
+    const branchQuery = selectedBranchId ? `&branch=${selectedBranchId}` : "";
     router.push(
-      `/booking?room=${roomId}&checkin=${checkIn}&checkout=${checkOut}&guests=${guests}`
+      `/booking?room=${roomId}&checkin=${checkIn}&checkout=${checkOut}&guests=${guests}${branchQuery}`
     );
   };
 

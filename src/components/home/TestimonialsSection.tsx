@@ -24,13 +24,13 @@ export default function TestimonialsSection() {
   };
 
   return (
-    <section id="reviews" className="py-24 md:py-32 bg-bg-dark border-b border-border-dark">
+    <section id="reviews" className="py-12 md:py-18 bg-bg-dark border-b border-border-dark">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        
+
         {/* Section Title */}
         <div className="mb-16">
           <span className="text-[10px] md:text-xs uppercase tracking-[0.25em] text-gold font-sans font-medium mb-3 block">
-            § 05 · REVIEWS & STORIES
+            § 02 · REVIEWS & STORIES
           </span>
           <h2 className="font-serif text-3xl md:text-5xl text-text-offwhite font-light tracking-wide">
             Our guests, in their own words.

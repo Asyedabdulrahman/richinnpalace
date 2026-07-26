@@ -6,9 +6,11 @@ import { formatPrice } from "@/lib/utils";
 import { Maximize2, Users, Calendar, ArrowRight, ShieldCheck, Landmark } from "lucide-react";
 import AccordionFAQ from "./AccordionFAQ"; // Client component for FAQ interactivity
 import StickyBookingPanel from "./StickyBookingPanel"; // Client component for sticky calculations
+import BranchDropdownSelector from "@/components/common/BranchDropdownSelector";
 
 interface Props {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ branch?: string }>;
 }
 
 // Enable Next.js Static Generation
@@ -36,13 +38,17 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default async function RoomDetailsPage({ params }: Props) {
+export default async function RoomDetailsPage({ params, searchParams }: Props) {
   const { slug } = await params;
+  const { branch: selectedBranchId } = await searchParams;
   const room = rooms.find((r) => r.slug === slug);
 
   if (!room) {
     notFound();
   }
+
+  // Determine active branch, default to the first branch if none is explicitly selected
+  const activeBranch = room.branches?.find((b) => b.id === selectedBranchId) || room.branches?.[0];
 
   // Filter other rooms for the bottom recommendation section
   const relatedRooms = rooms.filter((r) => r.id !== room.id).slice(0, 2);
@@ -57,7 +63,13 @@ export default async function RoomDetailsPage({ params }: Props) {
           <span>/</span>
           <Link href="/rooms" className="hover:text-gold transition-colors">CHAMBERS</Link>
           <span>/</span>
-          <span className="text-gold font-medium">{room.name}</span>
+          <span className="text-text-gray/60">{room.name}</span>
+          {activeBranch && (
+            <>
+              <span>/</span>
+              <span className="text-gold font-medium">{activeBranch.name.split(" — ")[1] || activeBranch.name}</span>
+            </>
+          )}
         </nav>
 
         {/* Gallery Grid */}
@@ -109,6 +121,14 @@ export default async function RoomDetailsPage({ params }: Props) {
                 {room.longDescription}
               </p>
             </div>
+
+            {room.branches && room.branches.length > 0 && (
+              <BranchDropdownSelector
+                branches={room.branches}
+                selectedBranchId={activeBranch?.id || ""}
+                roomSlug={room.slug}
+              />
+            )}
 
             {/* Room Specs Grid */}
             <div className="space-y-6">
@@ -180,7 +200,7 @@ export default async function RoomDetailsPage({ params }: Props) {
           {/* Right Column: Sticky Booking Widget */}
           <div className="lg:col-span-4 lg:relative">
             <div className="lg:sticky lg:top-28">
-              <StickyBookingPanel roomPrice={room.price} roomId={room.id} />
+              <StickyBookingPanel roomPrice={room.price} roomId={room.id} selectedBranchId={activeBranch?.id} />
             </div>
           </div>
 

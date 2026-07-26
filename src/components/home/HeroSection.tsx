@@ -42,7 +42,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-bg-dark pt-16">
+    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
       {/* Background Image with Zoom-in Animation */}
       <motion.div
         variants={bgVariants}

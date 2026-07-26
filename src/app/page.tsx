@@ -4,7 +4,7 @@ import FeaturedRooms from "@/components/home/FeaturedRooms";
 import ManifestoSection from "@/components/home/ManifestoSection";
 import GallerySection from "@/components/home/GallerySection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
-import WhyChooseUsSection from "@/components/home/WhyChooseUsSection";
+import FAQSection from "@/components/home/FAQSection";
 import CTASection from "@/components/home/CTASection";
 
 export default function Home() {
@@ -16,6 +16,9 @@ export default function Home() {
       {/* 2. Stats Section */}
       <StatsSection />
 
+      {/* 6. Testimonials Section */}
+      <TestimonialsSection />
+
       {/* 3. Featured Rooms */}
       <FeaturedRooms />
 
@@ -25,11 +28,10 @@ export default function Home() {
       {/* 5. Gallery Section */}
       <GallerySection />
 
-      {/* 6. Testimonials Section */}
-      <TestimonialsSection />
 
-      {/* 7. Why Choose Us Section */}
-      <WhyChooseUsSection />
+
+      {/* 7. FAQ Section */}
+      <FAQSection />
 
       {/* 8. Call to Action */}
       <CTASection />

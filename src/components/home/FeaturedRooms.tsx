@@ -1,13 +1,36 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, Variants } from "framer-motion";
-import { rooms } from "@/lib/data";
+import { rooms, Room, Branch } from "@/lib/data";
 import { ArrowRight, Maximize2, Users } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
+import BranchSelectorModal from "@/components/common/BranchSelectorModal";
 
 export default function FeaturedRooms() {
+  const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+
+  const handleRoomClick = (e: React.MouseEvent, room: Room) => {
+    e.preventDefault();
+    if (room.branches && room.branches.length > 0) {
+      setSelectedRoom(room);
+      setIsModalOpen(true);
+    } else {
+      router.push(`/rooms/${room.slug}`);
+    }
+  };
+
+  const handleSelectBranch = (branch: Branch) => {
+    setIsModalOpen(false);
+    if (selectedRoom) {
+      router.push(`/rooms/${selectedRoom.slug}?branch=${branch.id}`);
+    }
+  };
   const headerVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -31,7 +54,7 @@ export default function FeaturedRooms() {
   };
 
   return (
-    <section id="rooms" className="py-24 md:py-32 bg-bg-dark border-b border-border-dark">
+    <section id="rooms" className="py-12 md:py-18 bg-bg-dark border-border-dark">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Section Header */}
         <motion.div
@@ -39,7 +62,7 @@ export default function FeaturedRooms() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="mb-16 md:mb-20 text-left"
+          className="mb-6 md:mb-10 text-left"
         >
           <span className="text-[10px] md:text-xs uppercase tracking-[0.25em] text-gold font-sans font-medium mb-3 block">
             § 02 · FEATURED STAYS
@@ -63,10 +86,10 @@ export default function FeaturedRooms() {
                 viewport={{ once: true, margin: "-50px" }}
                 className="w-[85vw] sm:w-[50vw] md:w-auto shrink-0 snap-start snap-always flex flex-col group cursor-pointer"
               >
-                <Link href={`/rooms/${room.slug}`} className="flex-grow flex flex-col">
+                <div onClick={(e) => handleRoomClick(e, room)} className="flex-grow flex flex-col">
                   {/* Image Container with Badges */}
                   <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-surface-dark mb-5">
-                    
+
                     {/* Category floating badge */}
                     <div className="absolute top-4 left-4 z-10">
                       <span className="px-3.5 py-1.5 glass border border-border-dark text-[9px] uppercase tracking-[0.2em] font-sans font-medium text-text-offwhite rounded-full">
@@ -98,7 +121,7 @@ export default function FeaturedRooms() {
 
                   {/* Specs & CTA Info row */}
                   <div className="flex items-center justify-between mt-1 px-1 text-text-gray">
-                    
+
                     {/* Price details */}
                     <div className="flex flex-col">
                       <span className="text-[9px] uppercase tracking-[0.15em] text-text-gray/60">
@@ -130,7 +153,7 @@ export default function FeaturedRooms() {
                     </div>
 
                   </div>
-                </Link>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -147,6 +170,13 @@ export default function FeaturedRooms() {
           </Link>
         </div>
       </div>
+
+      <BranchSelectorModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        room={selectedRoom}
+        onSelectBranch={handleSelectBranch}
+      />
     </section>
   );
 }
