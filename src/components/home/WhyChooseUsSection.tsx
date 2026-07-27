@@ -32,11 +32,11 @@ export default function WhyChooseUsSection() {
   return (
     <section className="py-24 md:py-32 bg-bg-dark border-b border-border-dark">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
-        
+
         {/* Section Header */}
         <div className="mb-16 md:mb-20 text-center max-w-xl mx-auto">
           <span className="text-[10px] md:text-xs uppercase tracking-[0.25em] text-gold font-sans font-medium mb-3 block">
-            § 06 · EXPERIENCE & WELLNESS
+            06 · EXPERIENCE & WELLNESS
           </span>
           <h2 className="font-serif text-3xl md:text-5xl text-text-offwhite font-light tracking-wide leading-tight">
             Curated encounters in our sanctuary.

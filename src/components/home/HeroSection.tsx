@@ -52,7 +52,7 @@ export default function HeroSection() {
       >
         <Image
           src="/images/photo1.avif"
-          alt="Rich Inn Palace Jaipur luxury sanctuary bed chamber"
+          alt="Rich Inn Palace Chennai luxury sanctuary bed chamber"
           fill
           priority
           sizes="100vw"

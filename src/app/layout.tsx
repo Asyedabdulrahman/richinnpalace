@@ -23,11 +23,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://serahotel.com"),
   title: {
-    default: "Rich Inn Palace | Luxury Hotel & Sanctuary Jaipur",
-    template: "%s | Rich Inn Palace Jaipur",
+    default: "Rich Inn Palace | Luxury Hotel & Sanctuary Chennai",
+    template: "%s | Rich Inn Palace Chennai",
   },
-  description: "Experience unhurried luxury at Rich Inn Palace Jaipur. A quiet retreat of twenty-eight keys and dedicated butler care set against the historical Aravalli hills.",
-  keywords: ["Luxury Hotel Jaipur", "Boutique Resort Rajasthan", "Rich Inn Palace Hotel Jaipur", "Jaipur Luxury Stay", "Aravalli Hills Resort", "Heritage Sanctuary Jaipur"],
+  description: "Experience unhurried luxury at Rich Inn Palace Chennai. A quiet retreat of twenty-eight keys and dedicated butler care in T.Nagar.",
+  keywords: ["Luxury Hotel Chennai", "Boutique Resort Tamil Nadu", "Rich Inn Palace Hotel Chennai", "Chennai Luxury Stay", "T.Nagar Resort", "Heritage Sanctuary Chennai"],
   authors: [{ name: "Rich Inn Palace Hospitality Group" }],
   creator: "Rich Inn Palace Hospitality Group",
   publisher: "Rich Inn Palace Hospitality Group",
@@ -37,8 +37,8 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: "Rich Inn Palace | Luxury Hotel & Sanctuary Jaipur",
-    description: "Experience unhurried luxury at Rich Inn Palace Jaipur. A quiet retreat of twenty-eight keys and dedicated butler care.",
+    title: "Rich Inn Palace | Luxury Hotel & Sanctuary Chennai",
+    description: "Experience unhurried luxury at Rich Inn Palace Chennai. A quiet retreat of twenty-eight keys and dedicated butler care.",
     url: "https://serahotel.com",
     siteName: "Rich Inn Palace Hotel",
     images: [
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
         url: "/images/photo1.avif",
         width: 1200,
         height: 630,
-        alt: "Rich Inn Palace Jaipur Luxury Sanctuary Suite",
+        alt: "Rich Inn Palace Chennai Luxury Sanctuary Suite",
       },
     ],
     locale: "en_US",
@@ -54,12 +54,20 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rich Inn Palace | Luxury Hotel & Sanctuary Jaipur",
-    description: "Experience unhurried luxury at Rich Inn Palace Jaipur. A quiet retreat of twenty-eight keys and dedicated butler care.",
+    title: "Rich Inn Palace | Luxury Hotel & Sanctuary Chennai",
+    description: "Experience unhurried luxury at Rich Inn Palace Chennai. A quiet retreat of twenty-eight keys and dedicated butler care.",
     images: ["/images/photo1.avif"],
   },
-  alternates: {
-    canonical: "https://serahotel.com",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
@@ -70,7 +78,7 @@ export default function RootLayout({
   children: React.ReactNode;
   modal?: React.ReactNode;
 }>) {
-  // Structured data for SEO (Hotel, Organization, LocalBusiness)
+  // Structured data for SEO (Hotel, Organization, LocalBusiness, WebSite)
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -78,18 +86,30 @@ export default function RootLayout({
         "@type": "Hotel",
         "@id": "https://serahotel.com/#hotel",
         "name": "Rich Inn Palace Resorts & Sanctuary",
-        "description": "Experience unhurried luxury at Rich Inn Palace Jaipur. A quiet retreat of twenty-eight keys and dedicated butler care.",
+        "description": "Experience unhurried luxury at Rich Inn Palace Chennai. A quiet retreat of twenty-eight keys and dedicated butler care.",
         "image": "https://serahotel.com/images/photo1.avif",
         "telephone": "+91 141 555 0198",
         "email": "reservations@serahotel.com",
+        "url": "https://serahotel.com",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "NH-8, Amber Road",
-          "addressLocality": "Jaipur",
-          "addressRegion": "Rajasthan",
-          "postalCode": "302028",
+          "streetAddress": "Usman Road, T.Nagar",
+          "addressLocality": "Chennai",
+          "addressRegion": "Tamil Nadu",
+          "postalCode": "600017",
           "addressCountry": "IN"
         },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "13.0418",
+          "longitude": "80.2341"
+        },
+        "hasMap": "https://maps.google.com/?q=TNagar+Chennai",
+        "sameAs": [
+          "https://instagram.com/richinnpalace",
+          "https://facebook.com/richinnpalace",
+          "https://twitter.com/richinnpalace"
+        ],
         "starRating": {
           "@type": "Rating",
           "ratingValue": "5.0"
@@ -97,14 +117,38 @@ export default function RootLayout({
         "priceRange": "INR 12800 - INR 34500",
         "numberOfRooms": 28,
         "checkinTime": "14:00",
-        "checkoutTime": "12:00"
+        "checkoutTime": "12:00",
+        "amenityFeature": [
+          { "@type": "LocationFeatureSpecification", "name": "Private Butler Care", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Free High-Speed Wi-Fi", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Swimming Pool", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Fine Dining Restaurant", "value": true }
+        ]
       },
       {
         "@type": "Organization",
         "@id": "https://serahotel.com/#organization",
         "name": "Rich Inn Palace Hotels Group",
         "url": "https://serahotel.com",
-        "logo": "https://serahotel.com/images/logo.png"
+        "logo": "https://serahotel.com/images/logo.png",
+        "sameAs": [
+          "https://instagram.com/richinnpalace",
+          "https://facebook.com/richinnpalace"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://serahotel.com/#website",
+        "url": "https://serahotel.com",
+        "name": "Rich Inn Palace Chennai",
+        "publisher": {
+          "@id": "https://serahotel.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://serahotel.com/rooms?search={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
       }
     ]
   };

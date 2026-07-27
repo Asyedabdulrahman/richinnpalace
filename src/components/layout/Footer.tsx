@@ -17,7 +17,7 @@ export default function Footer() {
             <div className="space-y-4">
               <h3 className="font-serif text-3xl tracking-[0.25em] text-gold">Rich Inn Palace</h3>
               <p className="text-xs tracking-[0.1em] text-text-gray font-light max-w-xs leading-relaxed">
-                A quiet sanctuary where Jaipur&apos;s heritage is slowly rewritten. Twenty-eight keys of unhurried luxury.
+                A quiet sanctuary where Chennai&apos;s heritage is slowly rewritten. Twenty-eight keys of unhurried luxury.
               </p>
             </div>
 
@@ -105,13 +105,18 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/#manifesto" className="text-xs tracking-[0.1em] text-text-gray hover:text-gold transition-colors duration-300">
-                  The Manifesto
+                <Link href="/about" className="text-xs tracking-[0.1em] text-text-gray hover:text-gold transition-colors duration-300">
+                  About & Manifesto
                 </Link>
               </li>
               <li>
-                <Link href="/#gallery" className="text-xs tracking-[0.1em] text-text-gray hover:text-gold transition-colors duration-300">
+                <Link href="/gallery" className="text-xs tracking-[0.1em] text-text-gray hover:text-gold transition-colors duration-300">
                   Sanctuary Gallery
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="text-xs tracking-[0.1em] text-text-gray hover:text-gold transition-colors duration-300">
+                  Location & Contact
                 </Link>
               </li>
               <li>

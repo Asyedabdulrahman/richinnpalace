@@ -25,12 +25,12 @@ export default function Navbar() {
   const leftLinks = [
     { name: "Home", href: "/" },
     { name: "Rooms", href: "/rooms" },
-    { name: "Manifesto", href: "/#manifesto" },
+    { name: "About", href: "/about" },
   ];
 
   const rightLinks = [
-    { name: "Gallery", href: "/#gallery" },
-    { name: "Reviews", href: "/#reviews" },
+    { name: "Gallery", href: "/gallery" },
+    { name: "Contact", href: "/contact" },
   ];
 
   return (
@@ -108,7 +108,7 @@ export default function Navbar() {
         
         {/* Mobile Left */}
         <div className="text-[9px] tracking-[0.15em] text-text-gray font-sans font-light">
-          ESTD. 2012
+          ESTD. 2001
         </div>
 
         {/* Mobile Center Logo */}
@@ -120,7 +120,7 @@ export default function Navbar() {
 
         {/* Mobile Right */}
         <div className="text-[9px] tracking-[0.15em] text-text-gray font-sans font-light text-right">
-          JAIPUR · IN
+          CHENNAI · IN
         </div>
 
       </div>

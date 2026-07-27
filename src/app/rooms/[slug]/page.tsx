@@ -27,13 +27,36 @@ export async function generateMetadata({ params }: Props) {
   
   if (!room) return {};
 
+  const roomUrl = `https://serahotel.com/rooms/${slug}`;
+
   return {
-    title: `${room.name} | Rich Inn Palace Jaipur`,
+    title: `${room.name} | Rich Inn Palace Chennai`,
     description: room.longDescription.slice(0, 155) + "...",
+    keywords: [room.name, "Rich Inn Palace Chennai", "Luxury Suite Chennai", room.tag, "Tamil Nadu Boutique Hotel"],
+    alternates: {
+      canonical: roomUrl,
+    },
     openGraph: {
-      title: `${room.name} | Rich Inn Palace Jaipur`,
+      title: `${room.name} | Rich Inn Palace Chennai`,
       description: room.longDescription.slice(0, 155) + "...",
-      images: [{ url: room.image }],
+      url: roomUrl,
+      siteName: "Rich Inn Palace Hotel",
+      images: [
+        {
+          url: room.image,
+          width: 1200,
+          height: 630,
+          alt: `${room.name} at Rich Inn Palace Chennai`,
+        },
+      ],
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${room.name} | Rich Inn Palace Chennai`,
+      description: room.longDescription.slice(0, 155) + "...",
+      images: [room.image],
     },
   };
 }
@@ -53,8 +76,66 @@ export default async function RoomDetailsPage({ params, searchParams }: Props) {
   // Filter other rooms for the bottom recommendation section
   const relatedRooms = rooms.filter((r) => r.id !== room.id).slice(0, 2);
 
+  // Structured Data for HotelRoom & BreadcrumbList
+  const roomJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "HotelRoom",
+        "@id": `https://serahotel.com/rooms/${slug}#room`,
+        "name": room.name,
+        "description": room.longDescription,
+        "image": room.image,
+        "occupancy": {
+          "@type": "QuantitativeValue",
+          "maxValue": parseInt(room.guests) || 2
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": room.price,
+          "priceCurrency": "INR",
+          "availability": "https://schema.org/InStock",
+          "url": `https://serahotel.com/booking?room=${room.id}`
+        },
+        "containedInPlace": {
+          "@type": "Hotel",
+          "name": "Rich Inn Palace Chennai",
+          "url": "https://serahotel.com"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `https://serahotel.com/rooms/${slug}#breadcrumb`,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://serahotel.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Rooms",
+            "item": "https://serahotel.com/rooms"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": room.name,
+            "item": `https://serahotel.com/rooms/${slug}`
+          }
+        ]
+      }
+    ]
+  };
+
   return (
     <div className="bg-bg-dark min-h-screen pt-28 pb-20 font-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(roomJsonLd) }}
+      />
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         
         {/* Breadcrumb */}

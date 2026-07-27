@@ -28,11 +28,11 @@ export interface Room {
 export const hotelDetails = {
   name: "Rich Inn Palace",
   tagline: "Luxury, redefined.",
-  subTitle: "ESTD. 2012 | JAIPUR · IN",
+  subTitle: "ESTD. 2001 | CHENNAI · IN",
   description: "A quiet retreat where old craft, still hands, and slow evenings become the story you take home.",
   phone: "+91 141 555 0198",
   email: "reservations@serahotel.com",
-  address: "Rich Inn Palace, NH-8, Amber Road, Jaipur, Rajasthan, 302028, India",
+  address: "Rich Inn Palace, T.Nagar, Chennai, Tamil Nadu, 600017, India",
   googleMapsLink: "https://maps.google.com",
 };
 
@@ -160,7 +160,7 @@ export const rooms: Room[] = [
     attractions: [
       { name: "Amer Fort", distance: "15 mins drive" },
       { name: "Nahargarh Fort Hills", distance: "20 mins drive" },
-      { name: "Jaipur Old City Markets", distance: "30 mins drive" }
+      { name: "Chennai T.Nagar Shopping Hub", distance: "10 mins drive" }
     ],
     branches: [
       {
@@ -286,16 +286,16 @@ export const rooms: Room[] = [
     ],
     branches: [
       {
-        id: "royal-palace-jaipur",
-        name: "Rich Inn Palace — Royal Amber",
-        description: "Our signature mountain-view estate set against the ancient Aravalli Hills.",
-        address: "NH-8, Amber Road, Jaipur, Rajasthan 302028"
+        id: "royal-palace-chennai",
+        name: "Rich Inn Palace — T.Nagar",
+        description: "Our signature urban luxury estate set in the heart of Chennai.",
+        address: "Usman Road, T.Nagar, Chennai, Tamil Nadu 600017"
       },
       {
-        id: "royal-palace-city",
+        id: "royal-palace-beach",
         name: "Rich Inn Palace — Heritage Club",
-        description: "A premium private dining sanctuary near the historic City Palace.",
-        address: "Tonk Road, Jaipur, Rajasthan 302015"
+        description: "A premium private sanctuary near the scenic East Coast Road.",
+        address: "ECR, Chennai, Tamil Nadu 600115"
       }
     ]
   }
@@ -305,7 +305,7 @@ export const manifesto = [
   {
     num: "01",
     title: "Craft, not conspicuousness",
-    text: "Every rug is loomed by hand. Every arch is drawn, not printed. We honor raw materials and local stonemasons who shape Jaipur's soul.",
+    text: "Every rug is loomed by hand. Every arch is drawn, not printed. We honor raw materials and local artisans who shape Chennai's soul.",
   },
   {
     num: "02",
@@ -320,12 +320,12 @@ export const manifesto = [
   {
     num: "04",
     title: "Stillness over spectacle",
-    text: "No noisy engines, no loud events. Only the wind, if it visits. We preserve peace as our most expensive amenity.",
+    text: "No noisy engines, no loud events. Only the breeze, if it visits. We preserve peace as our most expensive amenity.",
   },
   {
     num: "05",
     title: "Built to breathe",
-    text: "Local yellow sandstone, lime-plastered walls, and high arched ceilings that cool naturally. Architecture that respects the climate and ground.",
+    text: "Natural plaster walls, and high arched ceilings that cool naturally. Architecture that respects the climate and ground.",
   },
   {
     num: "06",
@@ -341,7 +341,7 @@ export const testimonials = [
     role: "Architectural Writer",
     rating: 5,
     avatar: "/images/photos8.jpg",
-    stayDate: "Stayed Oct 2025",
+    stayDate: "Stayed Oct 2001",
     verified: true,
   },
   {
@@ -350,7 +350,7 @@ export const testimonials = [
     role: "Creative Director",
     rating: 5,
     avatar: "/images/photos9.jpg",
-    stayDate: "Stayed Jan 2026",
+    stayDate: "Stayed Jan 2001",
     verified: true,
   },
   {
@@ -359,7 +359,7 @@ export const testimonials = [
     role: "Editorial Designer",
     rating: 5,
     avatar: "/images/photos3.jpg",
-    stayDate: "Stayed May 2025",
+    stayDate: "Stayed May 2001",
     verified: true,
   },
 ];
