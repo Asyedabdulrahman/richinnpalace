@@ -103,23 +103,25 @@ export default function Navbar() {
 
       </div>
 
-      {/* Mobile Navigation: Simple Flexbar */}
-      <div className="md:hidden max-w-7xl mx-auto px-6 flex items-center justify-between">
+      {/* Mobile Navigation: Symmetric 3-Column Grid */}
+      <div className="md:hidden max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-3 items-center">
         
         {/* Mobile Left */}
-        <div className="text-[9px] tracking-[0.15em] text-text-gray font-sans font-light">
+        <div className="text-[8px] sm:text-[9px] tracking-[0.12em] text-text-gray font-sans font-light whitespace-nowrap truncate">
           ESTD. 2001
         </div>
 
         {/* Mobile Center Logo */}
-        <Link href="/" className="flex flex-col items-center">
-          <span className="font-serif text-xl tracking-[0.2em] text-text-offwhite font-light">
-            Rich Inn Palace
-          </span>
-        </Link>
+        <div className="flex justify-center">
+          <Link href="/" className="flex flex-col items-center">
+            <span className="font-serif text-base sm:text-lg md:text-xl tracking-[0.15em] sm:tracking-[0.2em] text-text-offwhite font-light whitespace-nowrap">
+              Rich Inn Palace
+            </span>
+          </Link>
+        </div>
 
         {/* Mobile Right */}
-        <div className="text-[9px] tracking-[0.15em] text-text-gray font-sans font-light text-right">
+        <div className="text-[8px] sm:text-[9px] tracking-[0.12em] text-text-gray font-sans font-light text-right whitespace-nowrap truncate">
           CHENNAI · IN
         </div>
 
