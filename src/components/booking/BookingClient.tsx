@@ -284,10 +284,11 @@ function BookingContent() {
 
             {/* Room selector */}
             <div className="flex flex-col space-y-1.5">
-              <label className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium">
+              <label htmlFor="roomSelector" className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium">
                 Select Chamber or Suite
               </label>
               <select
+                id="roomSelector"
                 value={selectedRoomId}
                 onChange={(e) => handleRoomChange(e.target.value)}
                 className="bg-bg-dark border border-border-dark rounded-lg p-3 text-xs text-text-offwhite font-sans focus:outline-none focus:border-gold transition-colors w-full cursor-pointer appearance-none animate-none"
@@ -303,10 +304,11 @@ function BookingContent() {
             {/* Branch selector */}
             {selectedRoom && selectedRoom.branches && selectedRoom.branches.length > 0 && (
               <div className="flex flex-col space-y-1.5 mt-4">
-                <label className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium">
+                <label htmlFor="branchSelector" className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium">
                   Select Branch Location
                 </label>
                 <select
+                  id="branchSelector"
                   value={selectedBranchId}
                   onChange={(e) => setSelectedBranchId(e.target.value)}
                   className="bg-bg-dark border border-border-dark rounded-lg p-3 text-xs text-text-offwhite font-sans focus:outline-none focus:border-gold transition-colors w-full cursor-pointer appearance-none animate-none"
@@ -323,10 +325,11 @@ function BookingContent() {
             {/* Dates */}
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col space-y-1.5">
-                <label className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium">
+                <label htmlFor="checkIn" className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium">
                   Check In
                 </label>
                 <input
+                  id="checkIn"
                   type="date"
                   value={checkIn}
                   min={getTomorrowString(0)}
@@ -345,10 +348,11 @@ function BookingContent() {
               </div>
 
               <div className="flex flex-col space-y-1.5">
-                <label className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium">
+                <label htmlFor="checkOut" className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium">
                   Check Out
                 </label>
                 <input
+                  id="checkOut"
                   type="date"
                   value={checkOut}
                   min={checkIn ? (() => {
@@ -367,10 +371,11 @@ function BookingContent() {
 
             {/* Guests */}
             <div className="flex flex-col space-y-1.5">
-              <label className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium">
+              <label htmlFor="guestsSelector" className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium">
                 Guests
               </label>
               <select
+                id="guestsSelector"
                 value={guests}
                 onChange={(e) => setGuests(parseInt(e.target.value, 10))}
                 className="bg-bg-dark border border-border-dark rounded-lg p-3 text-xs text-text-offwhite font-sans focus:outline-none focus:border-gold transition-colors w-full cursor-pointer appearance-none"
@@ -391,11 +396,12 @@ function BookingContent() {
 
             {/* Full Name */}
             <div className="flex flex-col space-y-1.5">
-              <label className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium flex items-center">
+              <label htmlFor="fullNameInput" className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium flex items-center">
                 <User size={11} className="mr-1.5" />
                 Full Name
               </label>
               <input
+                id="fullNameInput"
                 type="text"
                 required
                 value={fullName}
@@ -409,11 +415,12 @@ function BookingContent() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Email Address */}
               <div className="flex flex-col space-y-1.5">
-                <label className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium flex items-center">
+                <label htmlFor="emailInput" className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium flex items-center">
                   <Mail size={11} className="mr-1.5" />
                   Email Address
                 </label>
                 <input
+                  id="emailInput"
                   type="email"
                   required
                   value={email}
@@ -425,11 +432,12 @@ function BookingContent() {
 
               {/* Phone Number */}
               <div className="flex flex-col space-y-1.5">
-                <label className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium flex items-center">
+                <label htmlFor="phoneInput" className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium flex items-center">
                   <Phone size={11} className="mr-1.5" />
                   Phone Number
                 </label>
                 <input
+                  id="phoneInput"
                   type="tel"
                   required
                   value={phone}
@@ -442,10 +450,11 @@ function BookingContent() {
 
             {/* Special requests */}
             <div className="flex flex-col space-y-1.5">
-              <label className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium">
+              <label htmlFor="requestsInput" className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium">
                 Special Arrangements or Dietary Needs
               </label>
               <textarea
+                id="requestsInput"
                 value={requests}
                 onChange={(e) => setRequests(e.target.value)}
                 maxLength={1000}
