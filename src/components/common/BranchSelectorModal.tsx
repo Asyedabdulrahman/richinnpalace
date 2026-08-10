@@ -56,7 +56,7 @@ export default function BranchSelectorModal({
               {/* Header */}
               <div className="mb-8">
                 <span className="text-[9px] uppercase tracking-[0.25em] text-gold font-sans font-medium mb-2.5 block">
-                  § Select Preferred Sanctuary
+                  Select Preferred Sanctuary
                 </span>
                 <h2 className="font-serif text-2xl md:text-3xl text-text-offwhite font-light tracking-wide mb-3">
                   Choose Your Branch Location

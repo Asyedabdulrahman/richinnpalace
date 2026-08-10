@@ -1,42 +1,65 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, Variants } from "framer-motion";
-import { rooms, Room, Branch } from "@/lib/data";
+import { rooms } from "@/lib/data";
 import { ArrowRight, Maximize2, Users } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
-import BranchSelectorModal from "@/components/common/BranchSelectorModal";
+
+function RoomCardMedia({ src, alt, video }: { src: string; alt: string; video?: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      className="relative w-full h-full"
+      onMouseEnter={() => {
+        setIsHovered(true);
+        if (videoRef.current) {
+          videoRef.current.play().catch(() => {});
+        }
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        if (videoRef.current) {
+          videoRef.current.pause();
+          videoRef.current.currentTime = 0;
+        }
+      }}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(max-width: 768px) 85vw, 30vw"
+        className={`object-cover transition-opacity duration-500 ${isHovered && video ? "opacity-0" : "opacity-100"}`}
+      />
+      {video && (
+        <video
+          ref={videoRef}
+          src={video}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 pointer-events-none ${
+            isHovered ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      )}
+    </div>
+  );
+}
 
 export default function FeaturedRooms() {
-  const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
-
-  const handleRoomClick = (e: React.MouseEvent, room: Room) => {
-    e.preventDefault();
-    if (room.branches && room.branches.length > 0) {
-      setSelectedRoom(room);
-      setIsModalOpen(true);
-    } else {
-      router.push(`/rooms/${room.slug}`);
-    }
-  };
-
-  const handleSelectBranch = (branch: Branch) => {
-    setIsModalOpen(false);
-    if (selectedRoom) {
-      router.push(`/rooms/${selectedRoom.slug}?branch=${branch.id}`);
-    }
-  };
   const headerVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as any },
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
     },
   };
 
@@ -48,14 +71,14 @@ export default function FeaturedRooms() {
       transition: {
         duration: 1,
         delay: i * 0.15,
-        ease: [0.16, 1, 0.3, 1] as any,
+        ease: [0.16, 1, 0.3, 1],
       },
     }),
   };
 
   return (
-    <section id="rooms" className="py-12 md:py-18 bg-bg-dark border-border-dark">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+    <section id="featured-rooms" className="py-24 md:py-32 bg-bg-dark font-sans relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         {/* Section Header */}
         <motion.div
           variants={headerVariants}
@@ -65,7 +88,7 @@ export default function FeaturedRooms() {
           className="mb-6 md:mb-10 text-left"
         >
           <span className="text-[10px] md:text-xs uppercase tracking-[0.25em] text-gold font-sans font-medium mb-3 block">
-            § 02 · FEATURED STAYS
+            02 · FEATURED STAYS
           </span>
           <h2 className="font-serif text-3xl md:text-5xl text-text-offwhite font-light tracking-wide leading-tight max-w-xl">
             Rooms that keep <br className="hidden md:inline" />
@@ -86,30 +109,24 @@ export default function FeaturedRooms() {
                 viewport={{ once: true, margin: "-50px" }}
                 className="w-[85vw] sm:w-[50vw] md:w-auto shrink-0 snap-start snap-always flex flex-col group cursor-pointer"
               >
-                <div onClick={(e) => handleRoomClick(e, room)} className="flex-grow flex flex-col">
-                  {/* Image Container with Badges */}
+                <Link href={`/rooms/${room.slug}`} className="flex-grow flex flex-col">
+                  {/* Image Container with Badges & Video Hover */}
                   <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-surface-dark mb-5">
 
                     {/* Category floating badge */}
-                    <div className="absolute top-4 left-4 z-10">
+                    <div className="absolute top-4 left-4 z-20">
                       <span className="px-3.5 py-1.5 glass border border-border-dark text-[9px] uppercase tracking-[0.2em] font-sans font-medium text-text-offwhite rounded-full">
                         {room.tag}
                       </span>
                     </div>
 
-                    {/* Room main image */}
+                    {/* Room main image / video hover */}
                     <div className="relative w-full h-full transition-transform duration-700 ease-out group-hover:scale-105">
-                      <Image
-                        src={room.image}
-                        alt={room.name}
-                        fill
-                        sizes="(max-width: 768px) 85vw, 30vw"
-                        className="object-cover"
-                      />
+                      <RoomCardMedia src={room.image} alt={room.name} video={room.video} />
                     </div>
 
-                    {/* Title overlay inside card (SÉRAI style) */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-bg-dark/85 via-bg-dark/10 to-transparent flex flex-col justify-end p-6 md:p-8">
+                    {/* Title overlay inside card */}
+                    <div className="absolute inset-0 z-10 bg-gradient-to-t from-bg-dark/85 via-bg-dark/10 to-transparent flex flex-col justify-end p-6 md:p-8 pointer-events-none">
                       <h3 className="font-serif text-2xl md:text-3xl text-text-offwhite font-light mb-1.5 group-hover:text-gold transition-colors duration-300">
                         {room.name}
                       </h3>
@@ -153,7 +170,7 @@ export default function FeaturedRooms() {
                     </div>
 
                   </div>
-                </div>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -170,13 +187,6 @@ export default function FeaturedRooms() {
           </Link>
         </div>
       </div>
-
-      <BranchSelectorModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        room={selectedRoom}
-        onSelectBranch={handleSelectBranch}
-      />
     </section>
   );
 }

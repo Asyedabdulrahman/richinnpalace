@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ShieldCheck, HeartHandshake, Sparkles, Compass } from "lucide-react";
+import { SITE_CONFIG } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Heritage & Philosophy | Rich Inn Palace Chennai",
@@ -14,13 +15,13 @@ export const metadata: Metadata = {
     "Chennai Luxury Sanctuary Philosophy",
   ],
   alternates: {
-    canonical: "https://serahotel.com/about",
+    canonical: `${SITE_CONFIG.domain}/about`,
   },
   openGraph: {
     title: "Heritage & Philosophy | Rich Inn Palace Chennai",
     description:
       "Discover the story of Rich Inn Palace Chennai. Established in 2001.",
-    url: "https://serahotel.com/about",
+    url: `${SITE_CONFIG.domain}/about`,
     siteName: "Rich Inn Palace Hotel",
     images: [
       {

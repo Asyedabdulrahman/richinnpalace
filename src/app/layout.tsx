@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import MobileNav from "@/components/layout/MobileNav";
+import { SITE_CONFIG } from "@/lib/config";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -21,7 +22,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://serahotel.com"),
+  metadataBase: new URL(SITE_CONFIG.domain),
   title: {
     default: "Rich Inn Palace | Luxury Hotel & Sanctuary Chennai",
     template: "%s | Rich Inn Palace Chennai",
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Rich Inn Palace | Luxury Hotel & Sanctuary Chennai",
     description: "Experience unhurried luxury at Rich Inn Palace Chennai. A quiet retreat of twenty-eight keys and dedicated butler care.",
-    url: "https://serahotel.com",
+    url: SITE_CONFIG.domain,
     siteName: "Rich Inn Palace Hotel",
     images: [
       {
@@ -84,13 +85,13 @@ export default function RootLayout({
     "@graph": [
       {
         "@type": "Hotel",
-        "@id": "https://serahotel.com/#hotel",
+        "@id": `${SITE_CONFIG.domain}/#hotel`,
         "name": "Rich Inn Palace Resorts & Sanctuary",
         "description": "Experience unhurried luxury at Rich Inn Palace Chennai. A quiet retreat of twenty-eight keys and dedicated butler care.",
-        "image": "https://serahotel.com/images/photo1.avif",
-        "telephone": "+91 141 555 0198",
-        "email": "reservations@serahotel.com",
-        "url": "https://serahotel.com",
+        "image": `${SITE_CONFIG.domain}/images/photo1.avif`,
+        "telephone": SITE_CONFIG.contact.phone,
+        "email": SITE_CONFIG.contact.email,
+        "url": SITE_CONFIG.domain,
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "Usman Road, T.Nagar",
@@ -127,10 +128,10 @@ export default function RootLayout({
       },
       {
         "@type": "Organization",
-        "@id": "https://serahotel.com/#organization",
+        "@id": `${SITE_CONFIG.domain}/#organization`,
         "name": "Rich Inn Palace Hotels Group",
-        "url": "https://serahotel.com",
-        "logo": "https://serahotel.com/images/logo.png",
+        "url": SITE_CONFIG.domain,
+        "logo": `${SITE_CONFIG.domain}/images/logo.png`,
         "sameAs": [
           "https://instagram.com/richinnpalace",
           "https://facebook.com/richinnpalace"
@@ -138,15 +139,15 @@ export default function RootLayout({
       },
       {
         "@type": "WebSite",
-        "@id": "https://serahotel.com/#website",
-        "url": "https://serahotel.com",
+        "@id": `${SITE_CONFIG.domain}/#website`,
+        "url": SITE_CONFIG.domain,
         "name": "Rich Inn Palace Chennai",
         "publisher": {
-          "@id": "https://serahotel.com/#organization"
+          "@id": `${SITE_CONFIG.domain}/#organization`
         },
         "potentialAction": {
           "@type": "SearchAction",
-          "target": "https://serahotel.com/rooms?search={search_term_string}",
+          "target": `${SITE_CONFIG.domain}/rooms?search={search_term_string}`,
           "query-input": "required name=search_term_string"
         }
       }

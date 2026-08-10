@@ -94,7 +94,7 @@ export default function Navbar() {
           </nav>
 
           <Link
-            href="/booking"
+            href="/rooms"
             className="inline-block px-5 py-2.5 rounded-full border border-gold/40 text-gold hover:bg-gold hover:text-bg-dark hover:border-gold font-sans text-xs uppercase tracking-[0.15em] transition-all duration-300 active:scale-[0.98] shadow-sm hover:shadow-[0_0_15px_rgba(199,168,109,0.2)]"
           >
             Book Your Stay

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Mail, Phone, MapPin, Clock, ShieldCheck } from "lucide-react";
+import { SITE_CONFIG } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Contact & Location | Rich Inn Palace Chennai",
@@ -13,13 +13,13 @@ export const metadata: Metadata = {
     "T.Nagar Hotel Contact",
   ],
   alternates: {
-    canonical: "https://serahotel.com/contact",
+    canonical: `${SITE_CONFIG.domain}/contact`,
   },
   openGraph: {
     title: "Contact & Location | Rich Inn Palace Chennai",
     description:
       "Get in touch with Rich Inn Palace Chennai. Inquire about bespoke sanctuary reservations and airport transfers.",
-    url: "https://serahotel.com/contact",
+    url: `${SITE_CONFIG.domain}/contact`,
     siteName: "Rich Inn Palace Hotel",
     images: [
       {
@@ -46,8 +46,8 @@ export default function ContactPage() {
     "@context": "https://schema.org",
     "@type": "Hotel",
     "name": "Rich Inn Palace Chennai",
-    "telephone": "+91 141 555 0198",
-    "email": "reservations@serahotel.com",
+    "telephone": SITE_CONFIG.contact.phone,
+    "email": SITE_CONFIG.contact.email,
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Usman Road, T.Nagar",
@@ -56,7 +56,7 @@ export default function ContactPage() {
       "postalCode": "600017",
       "addressCountry": "IN"
     },
-    "url": "https://serahotel.com/contact"
+    "url": `${SITE_CONFIG.domain}/contact`
   };
 
   return (
@@ -110,8 +110,8 @@ export default function ContactPage() {
                   <Mail className="text-gold shrink-0" size={16} />
                   <div>
                     <span className="text-text-gray/60 block text-[9px] uppercase tracking-wider">Direct Concierge Email</span>
-                    <a href="mailto:reservations@serahotel.com" className="text-text-offwhite hover:text-gold transition-colors font-medium">
-                      reservations@serahotel.com
+                    <a href={`mailto:${SITE_CONFIG.contact.email}`} className="text-text-offwhite hover:text-gold transition-colors font-medium">
+                      {SITE_CONFIG.contact.email}
                     </a>
                   </div>
                 </div>

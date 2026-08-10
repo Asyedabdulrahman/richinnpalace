@@ -3,9 +3,15 @@
 import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { hotelDetails, rooms } from "@/lib/data";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+
+  if (pathname?.startsWith("/rooms")) {
+    return null;
+  }
 
   return (
     <footer className="bg-surface-dark border-t border-border-dark text-text-offwhite font-sans mt-auto">

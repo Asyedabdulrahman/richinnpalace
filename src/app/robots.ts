@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { SITE_CONFIG } from "@/lib/config";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/admin/", "/booking/confirmation/"],
     },
-    sitemap: "https://serahotel.com/sitemap.xml",
+    sitemap: `${SITE_CONFIG.domain}/sitemap.xml`,
   };
 }

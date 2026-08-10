@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion, Variants } from "framer-motion";
 import { ArrowDown } from "lucide-react";
@@ -24,7 +23,7 @@ export default function HeroSection() {
       y: 0,
       transition: {
         duration: 1.2,
-        ease: [0.16, 1, 0.3, 1] as any, // Luxury cubic-bezier easing
+        ease: [0.16, 1, 0.3, 1], // Luxury cubic-bezier easing
       },
     },
   };
@@ -36,28 +35,29 @@ export default function HeroSection() {
       opacity: 0.45,
       transition: {
         duration: 2.5,
-        ease: [0.16, 1, 0.3, 1] as any,
+        ease: [0.16, 1, 0.3, 1],
       },
     },
   };
 
   return (
     <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
-      {/* Background Image with Zoom-in Animation */}
+      {/* Background Video with Zoom-in Animation */}
       <motion.div
         variants={bgVariants}
         initial="hidden"
         animate="visible"
         className="absolute inset-0 z-0"
       >
-        <Image
-          src="/images/photo1.avif"
-          alt="Rich Inn Palace Chennai luxury sanctuary bed chamber"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center drag-none select-none"
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover object-center drag-none select-none"
+        >
+          <source src="https://res.cloudinary.com/u4u9xqwy/video/upload/q_auto,f_auto/v1786340853/t_nagar_outro.mp4" type="video/mp4" />
+        </video>
         {/* Cinematic Vignette Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-bg-dark via-bg-dark/40 to-bg-dark/20" />
       </motion.div>
@@ -101,12 +101,16 @@ export default function HeroSection() {
             variants={itemVariants}
             className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6"
           >
-            <Link
-              href="/booking"
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("featured-rooms")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              href="#featured-rooms"
               className="px-8 py-3.5 bg-gold text-bg-dark text-xs uppercase tracking-[0.2em] font-medium rounded-full hover:bg-gold-hover transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] shadow-lg hover:shadow-[0_0_20px_rgba(199,168,109,0.3)] cursor-pointer"
             >
               Book Your Stay
-            </Link>
+            </a>
             <Link
               href="/rooms"
               className="px-8 py-3.5 border border-border-dark hover:border-gold/40 text-text-offwhite text-xs uppercase tracking-[0.2em] font-medium rounded-full transition-all duration-300 hover:text-gold cursor-pointer"

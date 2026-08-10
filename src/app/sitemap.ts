@@ -1,8 +1,9 @@
 import { MetadataRoute } from "next";
 import { rooms } from "@/lib/data";
+import { SITE_CONFIG } from "@/lib/config";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://serahotel.com";
+  const baseUrl = SITE_CONFIG.domain;
 
   // Static routes
   const staticRoutes = [

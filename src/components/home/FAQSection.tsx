@@ -63,7 +63,7 @@ export default function FAQSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as any },
+      transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
     },
   };
 
@@ -92,7 +92,7 @@ export default function FAQSection() {
           {/* Left Column: Title */}
           <div className="lg:col-span-4 lg:sticky lg:top-1/2 lg:-translate-y-1/2 lg:h-fit text-left flex flex-col items-start justify-center">
             <span className="text-[10px] md:text-xs uppercase tracking-[0.25em] text-gold font-sans font-medium mb-3 block">
-              § 05 · FAQ
+              05 · FAQ
             </span>
             <h2 className="font-serif text-3xl md:text-5xl text-text-offwhite font-light tracking-wide leading-[1.15] mb-6">
               Frequently <br />

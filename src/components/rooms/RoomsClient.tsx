@@ -1,53 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { rooms, Room, Branch } from "@/lib/data";
+import { rooms, Room } from "@/lib/data";
 import { formatPrice } from "@/lib/utils";
-import { Maximize2, Users, Calendar } from "lucide-react";
-import BranchSelectorModal from "@/components/common/BranchSelectorModal";
+import { Maximize2, Users } from "lucide-react";
+
+function RoomCardMedia({ src, alt, video, priority }: { src: string; alt: string; video?: string; priority?: boolean }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      className="relative w-full h-full"
+      onMouseEnter={() => {
+        setIsHovered(true);
+        if (videoRef.current) {
+          videoRef.current.play().catch(() => {});
+        }
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        if (videoRef.current) {
+          videoRef.current.pause();
+          videoRef.current.currentTime = 0;
+        }
+      }}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(max-width: 1024px) 100vw, 45vw"
+        className={`object-cover transition-opacity duration-500 ${isHovered && video ? "opacity-0" : "opacity-100"}`}
+        priority={priority}
+      />
+      {video && (
+        <video
+          ref={videoRef}
+          src={video}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 pointer-events-none ${
+            isHovered ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      )}
+    </div>
+  );
+}
 
 export default function RoomsClient() {
   const router = useRouter();
-  const [activeFilter, setActiveFilter] = useState("ALL");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
-  const [modalMode, setModalMode] = useState<"details" | "booking">("details");
+  const [activeFilter] = useState("ALL");
 
-  const handleDetailsClick = (e: React.MouseEvent, room: Room) => {
-    e.preventDefault();
-    if (room.branches && room.branches.length > 0) {
-      setSelectedRoom(room);
-      setModalMode("details");
-      setIsModalOpen(true);
-    } else {
-      router.push(`/rooms/${room.slug}`);
-    }
-  };
-
-  const handleBookingClick = (e: React.MouseEvent, room: Room) => {
-    e.preventDefault();
-    if (room.branches && room.branches.length > 0) {
-      setSelectedRoom(room);
-      setModalMode("booking");
-      setIsModalOpen(true);
-    } else {
-      router.push(`/booking?room=${room.id}`);
-    }
-  };
-
-  const handleSelectBranch = (branch: Branch) => {
-    setIsModalOpen(false);
-    if (selectedRoom) {
-      if (modalMode === "details") {
-        router.push(`/rooms/${selectedRoom.slug}?branch=${branch.id}`);
-      } else {
-        router.push(`/booking?room=${selectedRoom.id}&branch=${branch.id}`);
-      }
-    }
+  const handleDetailsClick = (room: Room) => {
+    router.push(`/rooms/${room.slug}`);
   };
 
   const filteredRooms = activeFilter === "ALL"
@@ -67,7 +79,7 @@ export default function RoomsClient() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as any },
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
     },
     exit: { opacity: 0, y: -20, transition: { duration: 0.4 } }
   };
@@ -110,27 +122,19 @@ export default function RoomsClient() {
                 className="bg-surface-dark border border-border-dark/50 rounded-2xl overflow-hidden flex flex-col group hover:border-gold/25 transition-all duration-500"
               >
                 {/* Image Wrap */}
-                <div onClick={(e) => handleDetailsClick(e, room)} className="relative aspect-[16/10] w-full overflow-hidden block cursor-pointer">
-                  <div className="absolute top-4 left-4 z-10">
+                <div onClick={() => handleDetailsClick(room)} className="relative aspect-[16/10] w-full overflow-hidden block cursor-pointer">
+                  <div className="absolute top-4 left-4 z-20">
                     <span className="px-3.5 py-1.5 glass border border-border-dark text-[9px] uppercase tracking-[0.2em] font-sans font-medium text-text-offwhite rounded-full">
                       {room.tag}
                     </span>
                   </div>
-                  {/* Availability Badge */}
-                  <div className="absolute top-4 right-4 z-10">
-                    <span className="px-3.5 py-1.5 bg-green-950/40 backdrop-blur-md border border-green-800/40 text-[9px] uppercase tracking-[0.15em] font-sans font-medium text-green-400 rounded-full flex items-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-400 mr-1.5 animate-pulse" />
-                      Available
-                    </span>
-                  </div>
+                  {/* Availability Badge Removed */}
 
                   <div className="relative w-full h-full transition-transform duration-700 ease-out group-hover:scale-105">
-                    <Image
+                    <RoomCardMedia
                       src={room.image}
                       alt={room.name}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 45vw"
-                      className="object-cover"
+                      video={room.video}
                       priority={room.id === "haveli-room"}
                     />
                   </div>
@@ -140,7 +144,7 @@ export default function RoomsClient() {
                 <div className="p-8 md:p-10 flex-grow flex flex-col justify-between space-y-6">
                   <div className="space-y-3">
                     <div className="flex items-baseline justify-between">
-                      <div onClick={(e) => handleDetailsClick(e, room)} className="cursor-pointer">
+                      <div onClick={() => handleDetailsClick(room)} className="cursor-pointer">
                         <h2 className="font-serif text-2xl md:text-3xl text-text-offwhite font-light hover:text-gold transition-colors duration-300">
                           {room.name}
                         </h2>
@@ -170,17 +174,10 @@ export default function RoomsClient() {
 
                     <div className="flex items-center space-x-4">
                       <button
-                        onClick={(e) => handleDetailsClick(e, room)}
+                        onClick={() => handleDetailsClick(room)}
                         className="px-4 py-2 border border-border-dark/80 text-[10px] uppercase tracking-[0.2em] font-medium text-text-offwhite rounded-full hover:border-gold hover:text-gold transition-all duration-300 cursor-pointer"
                       >
                         Details
-                      </button>
-                      <button
-                        onClick={(e) => handleBookingClick(e, room)}
-                        className="px-5 py-2 bg-gold text-bg-dark text-[10px] uppercase tracking-[0.2em] font-medium rounded-full hover:bg-gold-hover transition-all duration-300 flex items-center space-x-2 transform active:scale-[0.97] cursor-pointer"
-                      >
-                        <Calendar size={11} className="stroke-[1.75]" />
-                        <span>Book Stay</span>
                       </button>
                     </div>
                   </div>
@@ -192,13 +189,6 @@ export default function RoomsClient() {
         </motion.div>
 
       </div>
-
-      <BranchSelectorModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        room={selectedRoom}
-        onSelectBranch={handleSelectBranch}
-      />
     </div>
   );
 }

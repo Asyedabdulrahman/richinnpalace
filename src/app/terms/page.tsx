@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { SITE_CONFIG } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Terms & Cancellation Policy | Rich Inn Palace Chennai",
   description:
     "Terms of Stay and Cancellation Policy for Rich Inn Palace Chennai. Review check-in times, payment guidelines, and cancellation rules.",
   alternates: {
-    canonical: "https://serahotel.com/terms",
+    canonical: `${SITE_CONFIG.domain}/terms`,
   },
 };
 

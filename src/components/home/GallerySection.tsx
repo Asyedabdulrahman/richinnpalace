@@ -24,7 +24,7 @@ export default function GallerySection() {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 mb-8">
         <span className="text-[10px] md:text-xs uppercase tracking-[0.25em] text-gold font-sans font-medium mb-3 block">
-          § 04 · GALLERY
+          04 · GALLERY
         </span>
         <h2 className="font-serif text-3xl md:text-5xl text-text-offwhite font-light tracking-wide">
           Spaces carved from silence.

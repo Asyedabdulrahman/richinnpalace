@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { rooms } from "@/lib/data";
+import { SITE_CONFIG } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Sanctuary Imagery & Architecture | Rich Inn Palace Chennai",
@@ -14,13 +14,13 @@ export const metadata: Metadata = {
     "Boutique Hotel Gallery Tamil Nadu",
   ],
   alternates: {
-    canonical: "https://serahotel.com/gallery",
+    canonical: `${SITE_CONFIG.domain}/gallery`,
   },
   openGraph: {
     title: "Sanctuary Imagery & Architecture | Rich Inn Palace Chennai",
     description:
       "Explore the architectural grandeur and courtyard reflection pools at Rich Inn Palace Chennai.",
-    url: "https://serahotel.com/gallery",
+    url: `${SITE_CONFIG.domain}/gallery`,
     siteName: "Rich Inn Palace Hotel",
     images: [
       {
@@ -44,10 +44,14 @@ export const metadata: Metadata = {
 
 const galleryImages = [
   { src: "/images/photo1.avif", title: "Courtyard Sanctuaries", category: "Architecture" },
-  { src: "/images/photo2.avif", title: "Luxury Suite Chambers", category: "Suites" },
-  { src: "/images/photo3.avif", title: "Private Plunge Pools", category: "Amenities" },
-  { src: "/images/photo4.avif", title: "Twilight Lantern Corridor", category: "Atmosphere" },
-  { src: "/images/photo5.avif", title: "Executive Dining Pavilion", category: "Culinary" },
+  { src: "/images/photos2.avif", title: "Luxury Suite Chambers", category: "Suites" },
+  { src: "/images/photos3.jpg", title: "Private Plunge Pools", category: "Amenities" },
+  { src: "/images/photos4.jpg", title: "Twilight Lantern Corridor", category: "Atmosphere" },
+  { src: "/images/photos5.jpg", title: "Executive Dining Pavilion", category: "Culinary" },
+  { src: "/images/photos6.jpg", title: "Lime Plaster & Teak Architecture", category: "Design" },
+  { src: "/images/photos7.jpg", title: "Sun Terrace & Pool", category: "Outdoors" },
+  { src: "/images/photos8.jpg", title: "Ensuite Stone Bath", category: "Sanctuary" },
+  { src: "/images/photos9.jpg", title: "Garden Veranda", category: "Views" },
 ];
 
 export default function GalleryPage() {

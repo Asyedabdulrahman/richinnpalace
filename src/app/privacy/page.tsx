@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { SITE_CONFIG } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Rich Inn Palace Chennai",
   description:
     "Privacy Policy for Rich Inn Palace Chennai. Learn how we handle guest information, reservation data, and security protocols.",
   alternates: {
-    canonical: "https://serahotel.com/privacy",
+    canonical: `${SITE_CONFIG.domain}/privacy`,
   },
 };
 
@@ -45,7 +46,7 @@ export default function PrivacyPage() {
           <section className="space-y-2">
             <h2 className="text-sm text-text-offwhite font-medium">4. Contact & Inquiries</h2>
             <p>
-              For questions regarding your data privacy or to request update/deletion of your contact information, please write to our privacy officer at <a href="mailto:reservations@serahotel.com" className="text-gold underline">reservations@serahotel.com</a>.
+              For questions regarding your data privacy or to request update/deletion of your contact information, please write to our privacy officer at <a href={`mailto:${SITE_CONFIG.contact.email}`} className="text-gold underline">{SITE_CONFIG.contact.email}</a>.
             </p>
           </section>
         </div>

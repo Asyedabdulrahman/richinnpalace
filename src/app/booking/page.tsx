@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import BookingClient from "@/components/booking/BookingClient";
+import { SITE_CONFIG } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Reserve Your Stay & Bespoke Reservation | Rich Inn Palace Chennai",
@@ -12,13 +13,13 @@ export const metadata: Metadata = {
     "Boutique Hotel Reservation Tamil Nadu",
   ],
   alternates: {
-    canonical: "https://serahotel.com/booking",
+    canonical: `${SITE_CONFIG.domain}/booking`,
   },
   openGraph: {
     title: "Reserve Your Stay & Bespoke Reservation | Rich Inn Palace Chennai",
     description:
       "Secure your stay at Rich Inn Palace Chennai. Experience private butler care and unhurried luxury.",
-    url: "https://serahotel.com/booking",
+    url: `${SITE_CONFIG.domain}/booking`,
     siteName: "Rich Inn Palace Hotel",
     images: [
       {

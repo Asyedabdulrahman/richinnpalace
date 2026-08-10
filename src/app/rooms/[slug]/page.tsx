@@ -1,12 +1,12 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { rooms, Room } from "@/lib/data";
-import { formatPrice } from "@/lib/utils";
-import { Maximize2, Users, Calendar, ArrowRight, ShieldCheck, Landmark } from "lucide-react";
+import { rooms } from "@/lib/data";
+import { Landmark, MapPin } from "lucide-react";
 import AccordionFAQ from "./AccordionFAQ"; // Client component for FAQ interactivity
 import StickyBookingPanel from "./StickyBookingPanel"; // Client component for sticky calculations
+import RoomGallery from "./RoomGallery"; // Client component for gallery interactivity
 import BranchDropdownSelector from "@/components/common/BranchDropdownSelector";
+import { SITE_CONFIG } from "@/lib/config";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props) {
   
   if (!room) return {};
 
-  const roomUrl = `https://serahotel.com/rooms/${slug}`;
+  const roomUrl = `${SITE_CONFIG.domain}/rooms/${slug}`;
 
   return {
     title: `${room.name} | Rich Inn Palace Chennai`,
@@ -73,16 +73,13 @@ export default async function RoomDetailsPage({ params, searchParams }: Props) {
   // Determine active branch, default to the first branch if none is explicitly selected
   const activeBranch = room.branches?.find((b) => b.id === selectedBranchId) || room.branches?.[0];
 
-  // Filter other rooms for the bottom recommendation section
-  const relatedRooms = rooms.filter((r) => r.id !== room.id).slice(0, 2);
-
   // Structured Data for HotelRoom & BreadcrumbList
   const roomJsonLd = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "HotelRoom",
-        "@id": `https://serahotel.com/rooms/${slug}#room`,
+        "@id": `${SITE_CONFIG.domain}/rooms/${slug}#room`,
         "name": room.name,
         "description": room.longDescription,
         "image": room.image,
@@ -95,35 +92,35 @@ export default async function RoomDetailsPage({ params, searchParams }: Props) {
           "price": room.price,
           "priceCurrency": "INR",
           "availability": "https://schema.org/InStock",
-          "url": `https://serahotel.com/booking?room=${room.id}`
+          "url": `${SITE_CONFIG.domain}/booking?room=${room.id}`
         },
         "containedInPlace": {
           "@type": "Hotel",
           "name": "Rich Inn Palace Chennai",
-          "url": "https://serahotel.com"
+          "url": SITE_CONFIG.domain
         }
       },
       {
         "@type": "BreadcrumbList",
-        "@id": `https://serahotel.com/rooms/${slug}#breadcrumb`,
+        "@id": `${SITE_CONFIG.domain}/rooms/${slug}#breadcrumb`,
         "itemListElement": [
           {
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
-            "item": "https://serahotel.com"
+            "item": SITE_CONFIG.domain
           },
           {
             "@type": "ListItem",
             "position": 2,
             "name": "Rooms",
-            "item": "https://serahotel.com/rooms"
+            "item": `${SITE_CONFIG.domain}/rooms`
           },
           {
             "@type": "ListItem",
             "position": 3,
             "name": room.name,
-            "item": `https://serahotel.com/rooms/${slug}`
+            "item": `${SITE_CONFIG.domain}/rooms/${slug}`
           }
         ]
       }
@@ -154,31 +151,10 @@ export default async function RoomDetailsPage({ params, searchParams }: Props) {
         </nav>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
-          <div className="md:col-span-2 relative aspect-[16/10] rounded-2xl overflow-hidden bg-surface-dark">
-            <Image
-              src={room.image}
-              alt={room.name}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 60vw"
-              className="object-cover"
-            />
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-1 gap-4">
-            {room.gallery.slice(1, 3).map((img, idx) => (
-              <div key={idx} className="relative aspect-[16/10] md:aspect-[16/9.5] rounded-2xl overflow-hidden bg-surface-dark">
-                <Image
-                  src={img}
-                  alt={`${room.name} gallery ${idx + 2}`}
-                  fill
-                  sizes="(max-width: 768px) 50vw, 30vw"
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+        <RoomGallery 
+          roomName={room.name} 
+          initialImages={room.gallery.length >= 3 ? room.gallery.slice(0, 3) : [room.image, ...room.gallery.slice(1, 3)]} 
+        />
 
         {/* Two Column Layout: Description & Sticky Side Panel */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
@@ -187,20 +163,24 @@ export default async function RoomDetailsPage({ params, searchParams }: Props) {
           <div className="lg:col-span-8 space-y-12 md:space-y-16">
             
             {/* Title & Core Description */}
-            <div className="space-y-4">
+            <div className="space-y-2">
               <span className="text-[10px] md:text-xs uppercase tracking-[0.25em] text-gold font-medium block">
                 {room.tag}
               </span>
-              <h1 className="font-serif text-3xl md:text-5xl text-text-offwhite font-light tracking-wide leading-tight">
-                {room.name}
-              </h1>
-              <p className="font-serif text-xl md:text-2xl text-gold font-light italic leading-relaxed">
-                &ldquo;{room.description}&rdquo;
-              </p>
-              <div className="h-px bg-border-dark/60 w-full pt-4" />
-              <p className="font-sans text-sm md:text-base text-text-gray font-light leading-relaxed pt-2">
-                {room.longDescription}
-              </p>
+              <div className="flex justify-between items-center flex-wrap gap-4">
+                <h1 className="font-serif text-3xl md:text-5xl text-text-offwhite font-light tracking-wide leading-tight">
+                  {room.name}
+                </h1>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activeBranch?.address || room.name + " Rich Inn Palace Chennai")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center space-x-2 px-4 py-2 border border-border-dark hover:border-gold/40 text-text-offwhite text-xs uppercase tracking-[0.15em] font-medium rounded-full transition-all duration-300 hover:text-gold cursor-pointer"
+                >
+                  <MapPin size={14} className="text-gold" />
+                  <span>Google Maps</span>
+                </a>
+              </div>
             </div>
 
             {room.branches && room.branches.length > 0 && (
@@ -287,64 +267,7 @@ export default async function RoomDetailsPage({ params, searchParams }: Props) {
 
         </div>
 
-        {/* Related Rooms recommendations */}
-        <div className="border-t border-border-dark mt-24 pt-16 space-y-10">
-          <div className="flex justify-between items-baseline">
-            <h3 className="font-serif text-2xl md:text-3xl text-text-offwhite font-light tracking-wide">
-              Other Sanctuaries
-            </h3>
-            <Link
-              href="/rooms"
-              className="text-[10px] uppercase tracking-[0.2em] text-gold hover:text-text-offwhite transition-colors duration-300"
-            >
-              See All
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {relatedRooms.map((relRoom) => (
-              <div
-                key={relRoom.id}
-                className="bg-surface-dark border border-border-dark/50 rounded-2xl overflow-hidden flex flex-col sm:flex-row group hover:border-gold/20 transition-all duration-300"
-              >
-                <div className="relative aspect-[16/10] sm:aspect-square sm:w-44 shrink-0 overflow-hidden bg-bg-dark">
-                  <Image
-                    src={relRoom.image}
-                    alt={relRoom.name}
-                    fill
-                    sizes="(max-width: 640px) 100vw, 176px"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-6 flex flex-col justify-between flex-grow">
-                  <div className="space-y-2">
-                    <span className="text-[8px] uppercase tracking-[0.2em] text-gold font-sans font-medium">
-                      {relRoom.tag}
-                    </span>
-                    <h4 className="font-serif text-xl text-text-offwhite font-light group-hover:text-gold transition-colors duration-300">
-                      {relRoom.name}
-                    </h4>
-                    <p className="text-[11px] text-text-gray/80 line-clamp-2 leading-relaxed font-sans font-light">
-                      {relRoom.longDescription}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between pt-4 border-t border-border-dark/30 mt-4">
-                    <span className="font-serif text-sm text-text-offwhite font-light">
-                      {formatPrice(relRoom.price)}<span className="font-sans text-[9px] text-text-gray/50 lowercase">/night</span>
-                    </span>
-                    <Link
-                      href={`/rooms/${relRoom.slug}`}
-                      className="text-[9px] uppercase tracking-[0.2em] text-gold font-medium inline-flex items-center space-x-1 hover:text-text-offwhite transition-colors"
-                    >
-                      <span>Explore</span>
-                      <ArrowRight size={10} />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+
 
       </div>
     </div>

@@ -19,7 +19,7 @@ export default function TestimonialsSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as any },
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
     },
   };
 
@@ -30,7 +30,7 @@ export default function TestimonialsSection() {
         {/* Section Title */}
         <div className="mb-16">
           <span className="text-[10px] md:text-xs uppercase tracking-[0.25em] text-gold font-sans font-medium mb-3 block">
-            § 02 · REVIEWS & STORIES
+            02 · REVIEWS & STORIES
           </span>
           <h2 className="font-serif text-3xl md:text-5xl text-text-offwhite font-light tracking-wide">
             Our guests, in their own words.

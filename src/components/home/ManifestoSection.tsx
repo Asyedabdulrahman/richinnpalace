@@ -21,7 +21,7 @@ export default function ManifestoSection() {
       y: 0,
       transition: {
         duration: 0.9,
-        ease: [0.16, 1, 0.3, 1] as any,
+        ease: [0.16, 1, 0.3, 1],
       },
     },
   };
@@ -34,14 +34,14 @@ export default function ManifestoSection() {
           {/* Left Column: Sticky Title */}
           <div className="lg:col-span-4 lg:sticky lg:top-1/2 lg:-translate-y-1/2 lg:h-fit text-left flex flex-col items-start justify-center">
             <span className="text-[10px] md:text-xs uppercase tracking-[0.25em] text-gold font-sans font-medium mb-3 block">
-              § 03 · OUR MANIFESTO
+              03 · OUR MANIFESTO & TARIFFS
             </span>
             <h2 className="font-serif text-3xl md:text-5xl text-text-offwhite font-light tracking-wide leading-[1.15] mb-6">
               Six things we <br />
               quietly promise.
             </h2>
-            <p className="font-sans text-xs tracking-wide leading-relaxed text-text-gray/80 font-light max-w-sm">
-              We do not build for the masses. We build for the moments when stillness is the only luxury that matters. Here is our silent commitment to you.
+            <p className="font-sans text-xs tracking-wide leading-relaxed text-text-gray/80 font-light max-w-xl">
+              Transparent luxury tariffs, 24-hour check-in flexibility, complimentary South Indian breakfast buffets, and 24/7 room service across our prime T. Nagar properties.
             </p>
           </div>
 
@@ -54,17 +54,12 @@ export default function ManifestoSection() {
               viewport={{ once: true, margin: "-100px" }}
               className="divide-y divide-border-dark/60"
             >
-              {manifesto.map((item) => (
+              {manifesto.map((item, idx) => (
                 <motion.div
-                  key={item.num}
+                  key={idx}
                   variants={itemVariants}
-                  className="py-6 first:pt-0 last:pb-0 flex flex-col sm:flex-row gap-6 sm:gap-12 group"
+                  className="py-6 first:pt-0 last:pb-0 group"
                 >
-                  {/* Number */}
-                  <span className="font-serif text-3xl md:text-4xl text-gold font-light tracking-wider leading-none shrink-0">
-                    {item.num}
-                  </span>
-
                   {/* Content */}
                   <div className="space-y-1.5">
                     <h3 className="font-serif text-xl md:text-2xl text-text-offwhite font-light group-hover:text-gold transition-colors duration-300">

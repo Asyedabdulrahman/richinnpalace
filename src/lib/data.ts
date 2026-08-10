@@ -1,3 +1,5 @@
+import { SITE_CONFIG } from "./config";
+
 export interface Branch {
   id: string;
   name: string;
@@ -17,6 +19,7 @@ export interface Room {
   description: string;
   longDescription: string;
   image: string;
+  video?: string;
   gallery: string[];
   amenities: string[];
   specs: { label: string; value: string }[];
@@ -26,14 +29,14 @@ export interface Room {
 }
 
 export const hotelDetails = {
-  name: "Rich Inn Palace",
-  tagline: "Luxury, redefined.",
-  subTitle: "ESTD. 2001 | CHENNAI · IN",
+  name: SITE_CONFIG.name,
+  tagline: SITE_CONFIG.tagline,
+  subTitle: SITE_CONFIG.subTitle,
   description: "A quiet retreat where old craft, still hands, and slow evenings become the story you take home.",
-  phone: "+91 141 555 0198",
-  email: "reservations@serahotel.com",
-  address: "Rich Inn Palace, T.Nagar, Chennai, Tamil Nadu, 600017, India",
-  googleMapsLink: "https://maps.google.com",
+  phone: SITE_CONFIG.contact.phone,
+  email: SITE_CONFIG.contact.email,
+  address: SITE_CONFIG.contact.address,
+  googleMapsLink: SITE_CONFIG.contact.googleMapsUrl,
 };
 
 export const stats = [
@@ -54,8 +57,9 @@ export const rooms: Room[] = [
     size: "480 SF",
     guests: "2 Guests",
     description: "Heritage, softly rewritten.",
-    longDescription: "Our Haveli Rooms offer a gentle entry into the spirit of Rajasthan. Featuring hand-polished lime plaster walls, low-slung teak furnishings, and traditional arches that filter the morning sun, these rooms overlook our central stone courtyard. A personal sanctuary designed for rest, complete with an ensuite stone bathtub and organic linen.",
+    longDescription: "Our Haveli Rooms offer a gentle entry into the spirit of heritage living. Featuring hand-polished lime plaster walls, low-slung teak furnishings, and traditional arches that filter the morning sun, these rooms overlook our central stone courtyard. A personal sanctuary designed for rest, complete with an ensuite stone bathtub and organic linen.",
     image: "/images/photo1.avif",
+    video: "https://res.cloudinary.com/u4u9xqwy/video/upload/q_auto,f_auto/v1786340853/t_nagar_2.mp4",
     gallery: [
       "/images/photo1.avif",
       "/images/photos4.jpg",
@@ -93,10 +97,10 @@ export const rooms: Room[] = [
       }
     ],
     attractions: [
-      { name: "Amer Fort", distance: "15 mins drive" },
-      { name: "Jal Mahal (Water Palace)", distance: "10 mins drive" },
-      { name: "Hawa Mahal (Wind Palace)", distance: "25 mins drive" },
-      { name: "City Palace", distance: "25 mins drive" }
+      { name: "Pondy Bazaar", distance: "5 mins walk" },
+      { name: "Valluvar Kottam", distance: "10 mins drive" },
+      { name: "Kapaleeshwarar Temple", distance: "15 mins drive" },
+      { name: "Express Avenue", distance: "15 mins drive" }
     ],
     branches: [
       {
@@ -125,6 +129,7 @@ export const rooms: Room[] = [
     description: "Nature and stillness, seamlessly merged.",
     longDescription: "Spacious suites featuring a walled, private courtyard garden where jasmine and bougainvillea climb. Inside, natural fabrics, local sandstone slabs, and custom ambient lighting create a sense of profound quiet. Enjoy your morning tea under the shade of a private neem tree or run a bath in the outdoor copper tub under the stars.",
     image: "/images/photos2.avif",
+    video: "https://res.cloudinary.com/u4u9xqwy/video/upload/q_auto,f_auto/v1786341698/reel_2_v.mp4",
     gallery: [
       "/images/photos2.avif",
       "/images/photos5.jpg",
@@ -145,7 +150,7 @@ export const rooms: Room[] = [
       { label: "Room Size", value: "650 sq ft / 60 sq m + private garden" },
       { label: "Maximum Occupancy", value: "2 Adults & 1 Child (under 12)" },
       { label: "Bathroom", value: "Double vanities, indoor rain shower + outdoor copper tub" },
-      { label: "View", value: "Private walled garden and hills" },
+      { label: "View", value: "Private walled garden courtyard" },
     ],
     faqs: [
       {
@@ -158,8 +163,8 @@ export const rooms: Room[] = [
       }
     ],
     attractions: [
-      { name: "Amer Fort", distance: "15 mins drive" },
-      { name: "Nahargarh Fort Hills", distance: "20 mins drive" },
+      { name: "Vadapalani Murugan Temple", distance: "5 mins walk" },
+      { name: "Forum Vijaya Mall", distance: "10 mins walk" },
       { name: "Chennai T.Nagar Shopping Hub", distance: "10 mins drive" }
     ],
     branches: [
@@ -180,15 +185,16 @@ export const rooms: Room[] = [
   {
     id: "signature-sanctuary",
     slug: "signature-sanctuary",
-    name: "Anna Nagar",
+    name: "T.Nagar",
     tag: "PLUNGE POOL",
     price: 26000,
     priceDisplay: "₹26,000",
     size: "920 SF",
     guests: "4 Guests",
     description: "An expanse of quiet luxury, bounded only by the horizon.",
-    longDescription: "Our signature residence offers the ultimate luxury of space. A sprawling layout features a separate bedroom, a light-filled living room with custom craft artifacts, and a private sun terrace with a heated plunge pool overlooking the Aravalli hills. Plastered wall finishes and stone arches complete the minimalist editorial design.",
+    longDescription: "Our signature residence offers the ultimate luxury of space. A sprawling layout features a separate bedroom, a light-filled living room with custom craft artifacts, and a private sun terrace with a heated plunge pool overlooking the city skyline. Plastered wall finishes and stone arches complete the minimalist editorial design.",
     image: "/images/photos3.jpg",
+    video: "https://res.cloudinary.com/u4u9xqwy/video/upload/q_auto,f_auto/v1786340925/t_nagar_5bhk.mp4",
     gallery: [
       "/images/photos3.jpg",
       "/images/photos6.jpg",
@@ -209,7 +215,7 @@ export const rooms: Room[] = [
       { label: "Room Size", value: "920 sq ft / 85 sq m" },
       { label: "Maximum Occupancy", value: "4 Adults or 2 Adults & 2 Children" },
       { label: "Bathroom", value: "His-and-Hers marble vanities, steam shower & stone bath" },
-      { label: "View", value: "Panoramic Aravalli Hills and sunset views" },
+      { label: "View", value: "Panoramic city skyline and sunset views" },
     ],
     faqs: [
       {
@@ -222,22 +228,22 @@ export const rooms: Room[] = [
       }
     ],
     attractions: [
-      { name: "Amer Fort Trek", distance: "Starts at property gates" },
-      { name: "Jaigarh Fort", distance: "20 mins drive" },
-      { name: "Galta Ji (Monkey Temple)", distance: "35 mins drive" }
+      { name: "Marina Beach", distance: "15 mins drive" },
+      { name: "Elliot's Beach (Besant Nagar)", distance: "20 mins drive" },
+      { name: "San Thome Basilica", distance: "15 mins drive" }
     ],
     branches: [
       {
-        id: "annanagar-club",
-        name: "Rich Inn Palace — Anna Nagar Club",
+        id: "tnagar-club",
+        name: "Rich Inn Palace — T.Nagar Club",
         description: "Exclusive boutique estate featuring custom plunge pool suites, located on 2nd Avenue.",
-        address: "No. 102, 2nd Avenue, Anna Nagar, Chennai, Tamil Nadu 600040"
+        address: "No. 102, 2nd Avenue, T. Nagar, Chennai, Tamil Nadu 600017"
       },
       {
-        id: "annanagar-heights",
-        name: "Rich Inn Palace — Anna Nagar Heights",
+        id: "tnagar-heights",
+        name: "Rich Inn Palace — T.Nagar Heights",
         description: "Premium penthouses with private decks and panoramic city skyline views, located on 5th Avenue.",
-        address: "No. 7, 5th Avenue, Anna Nagar, Chennai, Tamil Nadu 600040"
+        address: "No. 7, 5th Avenue, T. Nagar, Chennai, Tamil Nadu 600017"
       }
     ]
   },
@@ -245,14 +251,15 @@ export const rooms: Room[] = [
     id: "royal-palace-suite",
     slug: "royal-palace-suite",
     name: "Royal Palace Suite",
-    tag: "Aravalli Range View",
+    tag: "City Skyline View",
     price: 34500,
     priceDisplay: "₹34,500",
     size: "1200 SF",
     guests: "4 Guests",
     description: "An editorial tribute to royal living.",
-    longDescription: "A masterpiece of design combining heritage architecture with clean modern lines. Features high vaulted ceilings, custom curated local artwork, a private dining room, and two terraces offering unobstructed views of the Aravalli mountains. Enjoy tailored dinners prepared in-suite by our executive chef.",
+    longDescription: "A masterpiece of design combining heritage architecture with clean modern lines. Features high vaulted ceilings, custom curated local artwork, a private dining room, and two terraces offering unobstructed views of the city skyline. Enjoy tailored dinners prepared in-suite by our executive chef.",
     image: "/images/photos5.jpg",
+    video: "https://res.cloudinary.com/u4u9xqwy/video/upload/q_auto,f_auto/v1786341698/reel_2_v.mp4",
     gallery: [
       "/images/photos5.jpg",
       "/images/photos7.jpg",
@@ -272,7 +279,7 @@ export const rooms: Room[] = [
       { label: "Room Size", value: "1,200 sq ft / 111 sq m" },
       { label: "Maximum Occupancy", value: "4 Adults" },
       { label: "Bathroom", value: "Full white marble bathroom with steam room & copper tub" },
-      { label: "View", value: "Panoramic hills & heritage gardens" },
+      { label: "View", value: "Panoramic skyline & heritage gardens" },
     ],
     faqs: [
       {
@@ -281,8 +288,8 @@ export const rooms: Room[] = [
       }
     ],
     attractions: [
-      { name: "City Palace", distance: "25 mins drive" },
-      { name: "Amer Fort", distance: "15 mins drive" }
+      { name: "Mylapore Cultural Zone", distance: "15 mins drive" },
+      { name: "East Coast Road (ECR)", distance: "25 mins drive" }
     ],
     branches: [
       {
@@ -304,39 +311,39 @@ export const rooms: Room[] = [
 export const manifesto = [
   {
     num: "01",
-    title: "Craft, not conspicuousness",
-    text: "Every rug is loomed by hand. Every arch is drawn, not printed. We honor raw materials and local artisans who shape Chennai's soul.",
+    title: "Executive & Suite Tariffs in T. Nagar",
+    text: "Transparent luxury rates at Rajabather Street (Pondy Bazaar) & Rangan Street, T. Nagar. Executive Rooms Single ₹3,200 / Double ₹3,800; Suite Rooms Single ₹4,800 / Double ₹5,600. Extra bed ₹700.",
   },
   {
     num: "02",
-    title: "Fewer rooms, deeper care",
-    text: "Twenty-eight keys. One resident butler for every three guests. By limiting our scale, we ensure your days are unhurried and custom-tailored.",
+    title: "Weekend Special Offer — ₹2,999 ONLY",
+    text: "Experience luxury stays with our special weekend rate of ₹2,999 (actual price ₹3,500). Ideal for weekend staycations and business trips in T. Nagar, Chennai.",
   },
   {
     num: "03",
-    title: "Kitchen as heirloom",
-    text: "Recipes passed down through four generations. Every dish features organic ingredients sourced within eighty kilometers, preserving ancient culinary wisdom.",
+    title: "True 24-Hour Check-In & Check-Out",
+    text: "Enjoy ultimate flexibility with our 24 hours check-in and check-out policy at both Pondy Bazaar and Rangan Street properties. Stay full 24 hours from your arrival time.",
   },
   {
     num: "04",
-    title: "Stillness over spectacle",
-    text: "No noisy engines, no loud events. Only the breeze, if it visits. We preserve peace as our most expensive amenity.",
+    title: "Complimentary South Indian Veg Buffet Breakfast",
+    text: "Every direct stay includes an authentic complimentary South Indian vegetarian buffet breakfast, along with high-speed Wi-Fi and complimentary guest parking.",
   },
   {
     num: "05",
-    title: "Built to breathe",
-    text: "Natural plaster walls, and high arched ceilings that cool naturally. Architecture that respects the climate and ground.",
+    title: "24/7 Room Service & In-Room Mini Bar",
+    text: "24/7 front desk support, round-the-clock room service, custom mini bar setups in every room, and optional extra bed accommodations (₹700) for family stays.",
   },
   {
     num: "06",
-    title: "The luxury of time",
-    text: "No rigid check-out alarms. Wake up to the slow light, enjoy a late afternoon bath, and leave when your soul is truly ready.",
+    title: `Prime Locations & Direct Helpline (${SITE_CONFIG.contact.phone})`,
+    text: `Located in Chennai's heart on Rajabather Street (Pondy Bazaar) and Rangan Street, T. Nagar. Contact our direct booking desk at ${SITE_CONFIG.contact.phone} for instant reservations.`,
   },
 ];
 
 export const testimonials = [
   {
-    quote: "A masterclass in restraint. Nilaya is not about gold taps, but about the stillness, the shadow, the smell of fresh jasmine, and the extraordinary butler who knew what I needed before I did.",
+    quote: "A masterclass in restraint. Rich Inn Palace is not about gold taps, but about the stillness, the shadow, the smell of fresh jasmine, and the extraordinary butler who knew what I needed before I did.",
     author: "Elena Rostova",
     role: "Architectural Writer",
     rating: 5,
@@ -368,17 +375,17 @@ export const whyChooseUs = [
   {
     icon: "Compass",
     title: "Curated Excursions",
-    description: "Private walks through historic forts led by local historians and architects.",
+    description: "Private walks through historic heritage sites led by local historians and architects.",
   },
   {
     icon: "Sparkles",
     title: "Holistic Wellness",
-    description: "Ayurvedic therapy and guided sound bath healing overlooking Aravalli valleys.",
+    description: "Ayurvedic therapy and guided sound bath healing overlooking coastal sanctuaries.",
   },
   {
     icon: "ChefHat",
     title: "Heirloom Dining",
-    description: "Custom tasting menus showcasing seasonal Rajasthan ingredients from farm to table.",
+    description: "Custom tasting menus showcasing seasonal South Indian ingredients from farm to table.",
   },
   {
     icon: "ShieldCheck",
