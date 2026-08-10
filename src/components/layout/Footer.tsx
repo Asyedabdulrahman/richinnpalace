@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { hotelDetails, rooms } from "@/lib/data";
 import { usePathname } from "next/navigation";
+import { trackPhoneClick, trackEmailClick } from "@/lib/analytics";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -139,13 +140,21 @@ export default function Footer() {
             <ul className="space-y-3 text-xs tracking-[0.1em] text-text-gray font-light">
               <li className="flex items-center space-x-3">
                 <Phone size={13} className="text-gold shrink-0" />
-                <a href={`tel:${hotelDetails.phone.replace(/\s+/g, "")}`} className="hover:text-gold transition-colors duration-300">
+                <a
+                  href={`tel:${hotelDetails.phone.replace(/\s+/g, "")}`}
+                  onClick={() => trackPhoneClick("footer")}
+                  className="hover:text-gold transition-colors duration-300"
+                >
                   {hotelDetails.phone}
                 </a>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail size={13} className="text-gold shrink-0" />
-                <a href={`mailto:${hotelDetails.email}`} className="hover:text-gold transition-colors duration-300">
+                <a
+                  href={`mailto:${hotelDetails.email}`}
+                  onClick={() => trackEmailClick("footer")}
+                  className="hover:text-gold transition-colors duration-300"
+                >
                   {hotelDetails.email}
                 </a>
               </li>

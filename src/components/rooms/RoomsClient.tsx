@@ -7,6 +7,7 @@ import { motion, AnimatePresence, Variants } from "framer-motion";
 import { rooms, Room } from "@/lib/data";
 import { formatPrice } from "@/lib/utils";
 import { Maximize2, Users } from "lucide-react";
+import { trackRoomView, trackBookNowClick } from "@/lib/analytics";
 
 function RoomCardMedia({ src, alt, video, priority }: { src: string; alt: string; video?: string; priority?: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -44,7 +45,7 @@ function RoomCardMedia({ src, alt, video, priority }: { src: string; alt: string
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 pointer-events-none ${
             isHovered ? "opacity-100" : "opacity-0"
           }`}
@@ -59,6 +60,8 @@ export default function RoomsClient() {
   const [activeFilter] = useState("ALL");
 
   const handleDetailsClick = (room: Room) => {
+    trackRoomView(room.id, room.tag, room.price);
+    trackBookNowClick("rooms_catalog", room.id);
     router.push(`/rooms/${room.slug}`);
   };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, Suspense } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,6 +18,14 @@ import {
 import { sendReservationEmail } from "@/lib/emailjs";
 import { WhatsAppReservationData, buildWhatsAppUrl } from "@/lib/whatsapp";
 import ReservationConfirmationView from "./ReservationConfirmationView";
+import {
+  trackBookingStarted,
+  trackRoomSelected,
+  trackDateSelected,
+  trackGuestDetailsStarted,
+  trackReservationSubmitted,
+  trackReservationFailed,
+} from "@/lib/analytics";
 
 function getTomorrowString(offsetDays = 1): string {
   const d = new Date();
@@ -70,6 +78,10 @@ function BookingContent() {
   const [bookingReference, setBookingReference] = useState("");
   const [submittedData, setSubmittedData] = useState<WhatsAppReservationData | null>(null);
 
+  useEffect(() => {
+    trackBookingStarted("booking_page", initialRoomId, initialBranchId);
+  }, [initialRoomId, initialBranchId]);
+
   const handleRoomChange = (roomId: string) => {
     setSelectedRoomId(roomId);
     const newRoom = rooms.find((r) => r.id === roomId);
@@ -78,6 +90,7 @@ function BookingContent() {
     } else {
       setSelectedBranchId("");
     }
+    trackRoomSelected(roomId, newRoom?.name, newRoom?.branches?.[0]?.id);
   };
 
   // Derive nights from dates directly
@@ -180,9 +193,18 @@ function BookingContent() {
       setBookingReference(generatedRef);
       setSubmittedData(reservationPayload);
       setIsSubmitted(true);
+      trackReservationSubmitted({
+        roomId: selectedRoomId,
+        roomName: roomLabel,
+        nights: nights,
+        guestCount: guests,
+        estimatedTotal: grandTotal,
+        branchName: selectedBranch?.name,
+      });
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err: unknown) {
       console.error("Failed to send reservation request:", err);
+      trackReservationFailed(selectedRoomId, "emailjs_dispatch_error");
       setErrorMessage(
         "Unable to submit your reservation request via email at this moment. You can also reach out to our concierge directly on WhatsApp."
       );
@@ -316,6 +338,7 @@ function BookingContent() {
                     if (checkOut <= e.target.value) {
                       setCheckOut(nextDayStr);
                     }
+                    trackDateSelected(nights);
                   }}
                   className="bg-bg-dark border border-border-dark rounded-lg p-3 text-xs text-text-offwhite font-sans focus:outline-none focus:border-gold transition-colors w-full [color-scheme:dark]"
                 />
@@ -333,7 +356,10 @@ function BookingContent() {
                     nextDay.setDate(nextDay.getDate() + 1);
                     return nextDay.toISOString().split("T")[0];
                   })() : getTomorrowString(1)}
-                  onChange={(e) => setCheckOut(e.target.value)}
+                  onChange={(e) => {
+                    setCheckOut(e.target.value);
+                    trackDateSelected(nights);
+                  }}
                   className="bg-bg-dark border border-border-dark rounded-lg p-3 text-xs text-text-offwhite font-sans focus:outline-none focus:border-gold transition-colors w-full [color-scheme:dark]"
                 />
               </div>
@@ -373,6 +399,7 @@ function BookingContent() {
                 type="text"
                 required
                 value={fullName}
+                onFocus={() => trackGuestDetailsStarted(selectedRoomId, nights, guests)}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Elena Rostova"
                 className="bg-bg-dark border border-border-dark rounded-lg p-3 text-xs text-text-offwhite font-sans focus:outline-none focus:border-gold transition-colors w-full placeholder-text-gray/30"

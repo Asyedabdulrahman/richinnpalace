@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import MobileNav from "@/components/layout/MobileNav";
 import { SITE_CONFIG } from "@/lib/config";
+import { GA_MEASUREMENT_ID } from "@/lib/analytics";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -166,6 +168,25 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-bg-dark text-text-offwhite overflow-x-hidden selection:bg-gold selection:text-bg-dark font-sans">
+        {GA_MEASUREMENT_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_MEASUREMENT_ID}', {
+                  page_path: window.location.pathname,
+                  anonymize_ip: true
+                });
+              `}
+            </Script>
+          </>
+        )}
         <Navbar />
         <main className="flex-grow flex flex-col pt-0 pb-20 md:pb-0">
           {children}

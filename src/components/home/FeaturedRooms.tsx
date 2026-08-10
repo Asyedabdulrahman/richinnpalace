@@ -7,6 +7,7 @@ import { motion, Variants } from "framer-motion";
 import { rooms } from "@/lib/data";
 import { ArrowRight, Maximize2, Users } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
+import { trackRoomView, trackBookNowClick } from "@/lib/analytics";
 
 function RoomCardMedia({ src, alt, video }: { src: string; alt: string; video?: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -43,7 +44,7 @@ function RoomCardMedia({ src, alt, video }: { src: string; alt: string; video?: 
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 pointer-events-none ${
             isHovered ? "opacity-100" : "opacity-0"
           }`}
@@ -109,7 +110,14 @@ export default function FeaturedRooms() {
                 viewport={{ once: true, margin: "-50px" }}
                 className="w-[85vw] sm:w-[50vw] md:w-auto shrink-0 snap-start snap-always flex flex-col group cursor-pointer"
               >
-                <Link href={`/rooms/${room.slug}`} className="flex-grow flex flex-col">
+                <Link
+                  href={`/rooms/${room.slug}`}
+                  onClick={() => {
+                    trackRoomView(room.id, room.tag, room.price);
+                    trackBookNowClick("featured_rooms", room.id);
+                  }}
+                  className="flex-grow flex flex-col"
+                >
                   {/* Image Container with Badges & Video Hover */}
                   <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-surface-dark mb-5">
 

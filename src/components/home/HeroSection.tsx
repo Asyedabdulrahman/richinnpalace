@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion, Variants } from "framer-motion";
 import { ArrowDown } from "lucide-react";
+import { trackBookNowClick } from "@/lib/analytics";
 
 export default function HeroSection() {
   const containerVariants: Variants = {
@@ -54,6 +55,8 @@ export default function HeroSection() {
           loop
           muted
           playsInline
+          preload="metadata"
+          poster="/images/photo1.avif"
           className="w-full h-full object-cover object-center drag-none select-none"
         >
           <source src="https://res.cloudinary.com/u4u9xqwy/video/upload/q_auto,f_auto/v1786340853/t_nagar_outro.mp4" type="video/mp4" />
@@ -104,6 +107,7 @@ export default function HeroSection() {
             <a
               onClick={(e) => {
                 e.preventDefault();
+                trackBookNowClick("hero");
                 document.getElementById("featured-rooms")?.scrollIntoView({ behavior: "smooth" });
               }}
               href="#featured-rooms"

@@ -2,12 +2,12 @@ import type { NextConfig } from "next";
 
 const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com;
     style-src 'self' 'unsafe-inline';
-    img-src 'self' data: blob: https://res.cloudinary.com https://*.google.com https://*.googleapis.com;
+    img-src 'self' data: blob: https://res.cloudinary.com https://*.google.com https://*.googleapis.com https://www.google-analytics.com https://*.googletagmanager.com;
     media-src 'self' https://res.cloudinary.com;
     font-src 'self' data:;
-    connect-src 'self' https://api.emailjs.com https://*.google.com https://*.googleapis.com;
+    connect-src 'self' https://api.emailjs.com https://*.google.com https://*.googleapis.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com;
     frame-src 'self' https://www.google.com;
     object-src 'none';
     base-uri 'self';

@@ -11,6 +11,8 @@ import {
 import { WhatsAppReservationData, buildWhatsAppUrl } from "@/lib/whatsapp";
 import { Room } from "@/lib/data";
 
+import { trackWhatsAppClick } from "@/lib/analytics";
+
 interface ReservationConfirmationViewProps {
   reservationData: WhatsAppReservationData;
   bookingReference: string;
@@ -184,6 +186,7 @@ export default function ReservationConfirmationView({
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackWhatsAppClick("booking_confirmation", selectedRoom?.id)}
             className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white text-xs uppercase tracking-[0.2em] font-medium rounded-full transition-all duration-300 flex items-center justify-center space-x-2.5 shadow-lg hover:shadow-[0_0_25px_rgba(16,185,129,0.3)] cursor-pointer transform hover:scale-[1.01]"
           >
             <MessageSquare size={16} className="stroke-[2]" />

@@ -6,6 +6,8 @@ import { formatPrice } from "@/lib/utils";
 import { Calendar, Users, Info } from "lucide-react";
 import { rooms } from "@/lib/data";
 
+import { trackBookNowClick } from "@/lib/analytics";
+
 interface StickyBookingPanelProps {
   roomPrice: number;
   roomId: string;
@@ -47,6 +49,7 @@ export default function StickyBookingPanel({ roomPrice, roomId, selectedBranchId
   const grandTotal = baseTotal + luxuryTax;
 
   const handleBookNow = () => {
+    trackBookNowClick("room_detail", roomId);
     // Ensure guests does not exceed max capacity
     const validatedGuests = Math.min(guests, maxGuests);
     const branchQuery = selectedBranchId ? `&branch=${selectedBranchId}` : "";
