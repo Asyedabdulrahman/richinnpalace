@@ -15,6 +15,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${SITE_CONFIG.domain}/booking`,
   },
+  robots: {
+    index: false,
+    follow: true,
+  },
   openGraph: {
     title: "Reserve Your Stay & Bespoke Reservation | Rich Inn Palace Chennai",
     description:

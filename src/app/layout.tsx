@@ -88,8 +88,8 @@ export default function RootLayout({
       {
         "@type": "Hotel",
         "@id": `${SITE_CONFIG.domain}/#hotel`,
-        "name": "Rich Inn Palace Resorts & Sanctuary",
-        "description": "Experience unhurried luxury at Rich Inn Palace Chennai. A quiet retreat of twenty-eight keys and dedicated butler care.",
+        "name": "Rich Inn Palace",
+        "description": "Experience unhurried luxury at Rich Inn Palace Chennai. A quiet retreat of twenty-eight keys and dedicated butler care in T.Nagar.",
         "image": `${SITE_CONFIG.domain}/images/photo1.avif`,
         "telephone": SITE_CONFIG.contact.phone,
         "email": SITE_CONFIG.contact.email,
@@ -107,17 +107,11 @@ export default function RootLayout({
           "latitude": "13.0418",
           "longitude": "80.2341"
         },
-        "hasMap": "https://maps.google.com/?q=TNagar+Chennai",
+        "hasMap": SITE_CONFIG.contact.googleMapsUrl,
         "sameAs": [
-          "https://instagram.com/richinnpalace",
-          "https://facebook.com/richinnpalace",
-          "https://twitter.com/richinnpalace"
+          "https://instagram.com/richinnpalace"
         ],
-        "starRating": {
-          "@type": "Rating",
-          "ratingValue": "5.0"
-        },
-        "priceRange": "INR 12800 - INR 34500",
+        "priceRange": "₹₹₹₹",
         "numberOfRooms": 28,
         "checkinTime": "14:00",
         "checkoutTime": "12:00",
@@ -131,12 +125,11 @@ export default function RootLayout({
       {
         "@type": "Organization",
         "@id": `${SITE_CONFIG.domain}/#organization`,
-        "name": "Rich Inn Palace Hotels Group",
+        "name": "Rich Inn Palace",
         "url": SITE_CONFIG.domain,
-        "logo": `${SITE_CONFIG.domain}/images/logo.png`,
+        "logo": `${SITE_CONFIG.domain}/images/photo1.avif`,
         "sameAs": [
-          "https://instagram.com/richinnpalace",
-          "https://facebook.com/richinnpalace"
+          "https://instagram.com/richinnpalace"
         ]
       },
       {
