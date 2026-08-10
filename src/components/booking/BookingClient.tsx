@@ -1,43 +1,74 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useState, useMemo, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { rooms, hotelDetails } from "@/lib/data";
 import { formatPrice } from "@/lib/utils";
-import { Calendar, Users, ShieldCheck, Mail, Phone, User, Check, ArrowLeft, Loader2 } from "lucide-react";
-import { motion } from "framer-motion";
+import {
+  Mail,
+  Phone,
+  User,
+  ArrowLeft,
+  Loader2,
+  AlertCircle,
+  MessageSquare,
+} from "lucide-react";
+import { sendReservationEmail } from "@/lib/emailjs";
+import { WhatsAppReservationData, buildWhatsAppUrl } from "@/lib/whatsapp";
+import ReservationConfirmationView from "./ReservationConfirmationView";
+
+function getTomorrowString(offsetDays = 1): string {
+  const d = new Date();
+  d.setDate(d.getDate() + offsetDays);
+  return d.toISOString().split("T")[0];
+}
+
+function generateRefCode(): string {
+  return `RQ${Math.floor(100000 + Math.random() * 900000)}`;
+}
 
 function BookingContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
 
-  // Get tomorrow and day after date strings
-  const getTomorrowString = (offsetDays = 1) => {
-    const d = new Date();
-    d.setDate(d.getDate() + offsetDays);
-    return d.toISOString().split("T")[0];
-  };
+  // Initialize state directly from search params or defaults
+  const initialRoomId = useMemo(() => {
+    const roomParam = searchParams.get("room");
+    if (roomParam && rooms.some((r) => r.id === roomParam)) {
+      return roomParam;
+    }
+    return rooms[0]?.id || "";
+  }, [searchParams]);
 
-  // State initialized from search params or defaults
-  const [selectedRoomId, setSelectedRoomId] = useState("");
-  const [selectedBranchId, setSelectedBranchId] = useState("");
-  const [checkIn, setCheckIn] = useState(getTomorrowString(1));
-  const [checkOut, setCheckOut] = useState(getTomorrowString(2));
-  const [guests, setGuests] = useState(2);
-  const [nights, setNights] = useState(1);
+  const initialBranchId = useMemo(() => {
+    const branchParam = searchParams.get("branch");
+    const room = rooms.find((r) => r.id === initialRoomId) || rooms[0];
+    if (room && room.branches && room.branches.length > 0) {
+      const isValid = room.branches.some((b) => b.id === branchParam);
+      return isValid ? (branchParam as string) : room.branches[0].id;
+    }
+    return "";
+  }, [searchParams, initialRoomId]);
 
-  // Form info
+  const [selectedRoomId, setSelectedRoomId] = useState<string>(initialRoomId);
+  const [selectedBranchId, setSelectedBranchId] = useState<string>(initialBranchId);
+  const [checkIn, setCheckIn] = useState<string>(() => searchParams.get("checkin") || getTomorrowString(1));
+  const [checkOut, setCheckOut] = useState<string>(() => searchParams.get("checkout") || getTomorrowString(2));
+  const [guests, setGuests] = useState<number>(() => parseInt(searchParams.get("guests") || "2", 10) || 2);
+
+  // Form fields
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [requests, setRequests] = useState("");
 
-  // UI state
+  // Submission & Confirmation state
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [bookingReference, setBookingReference] = useState("");
+  const [submittedData, setSubmittedData] = useState<WhatsAppReservationData | null>(null);
 
   const handleRoomChange = (roomId: string) => {
     setSelectedRoomId(roomId);
@@ -49,51 +80,20 @@ function BookingContent() {
     }
   };
 
-  // Sync state with search params on load
-  useEffect(() => {
-    const roomParam = searchParams.get("room");
-    const checkinParam = searchParams.get("checkin");
-    const checkoutParam = searchParams.get("checkout");
-    const guestsParam = searchParams.get("guests");
-    const branchParam = searchParams.get("branch");
-
-    let activeRoomId = roomParam || "";
-    if (roomParam && rooms.some((r) => r.id === roomParam)) {
-      setSelectedRoomId(roomParam);
-      activeRoomId = roomParam;
-    } else if (rooms.length > 0) {
-      setSelectedRoomId(rooms[0].id);
-      activeRoomId = rooms[0].id;
-    }
-
-    if (checkinParam) setCheckIn(checkinParam);
-    if (checkoutParam) setCheckOut(checkoutParam);
-    if (guestsParam) setGuests(parseInt(guestsParam) || 2);
-
-    const activeRoom = rooms.find((r) => r.id === activeRoomId) || rooms[0];
-    if (activeRoom && activeRoom.branches && activeRoom.branches.length > 0) {
-      const isValidBranch = activeRoom.branches.some((b) => b.id === branchParam);
-      setSelectedBranchId(isValidBranch ? (branchParam as string) : activeRoom.branches[0].id);
-    } else {
-      setSelectedBranchId("");
-    }
-  }, [searchParams]);
-
-  // Recalculate nights when dates change
-  useEffect(() => {
+  // Derive nights from dates directly
+  const nights = useMemo(() => {
     const start = new Date(checkIn);
     const end = new Date(checkOut);
     if (end > start) {
       const diffTime = Math.abs(end.getTime() - start.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      setNights(diffDays);
-    } else {
-      setNights(1);
+      return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     }
+    return 1;
   }, [checkIn, checkOut]);
 
   const selectedRoom = rooms.find((r) => r.id === selectedRoomId) || rooms[0];
-  const selectedBranch = selectedRoom?.branches?.find((b) => b.id === selectedBranchId) || selectedRoom?.branches?.[0];
+  const selectedBranch =
+    selectedRoom?.branches?.find((b) => b.id === selectedBranchId) || selectedRoom?.branches?.[0];
 
   // Pricing calculations
   const basePrice = selectedRoom ? selectedRoom.price : 0;
@@ -101,81 +101,107 @@ function BookingContent() {
   const luxuryTax = Math.round(baseTotal * 0.18);
   const grandTotal = baseTotal + luxuryTax;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateForm = () => {
+    if (!fullName.trim()) return "Please enter your full name.";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) return "Please enter a valid email address.";
+    const phoneRegex = /^\+?[0-9\s\-\(\)]{6,20}$/;
+    if (!phone.trim() || !phoneRegex.test(phone.trim())) return "Please enter a valid contact phone number (at least 6 digits).";
+    const start = new Date(checkIn);
+    const end = new Date(checkOut);
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) return "Please select valid check-in and check-out dates.";
+    if (end <= start) return "Check-out date must be after check-in date.";
+    if (!selectedRoom) return "Please select a chamber or suite.";
+    const maxCapacity = selectedRoom ? parseInt(selectedRoom.guests, 10) || 2 : 4;
+    if (guests > maxCapacity) {
+      return `The selected chamber (${selectedRoom.name}) accommodates a maximum of ${maxCapacity} guests. Please adjust your guest selection.`;
+    }
+    if (requests.length > 1000) {
+      return "Special arrangements text cannot exceed 1000 characters.";
+    }
+    return null;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!fullName || !email || !phone) return;
+
+    if (isSubmitting) return;
+
+    setErrorMessage("");
+    const validationError = validateForm();
+    if (validationError) {
+      setErrorMessage(validationError);
+      return;
+    }
 
     setIsSubmitting(true);
 
-    // Simulate luxury server action request
-    setTimeout(() => {
+    const generatedRef = generateRefCode();
+    const durationLabel = `${nights} night${nights > 1 ? "s" : ""}`;
+    const propertyLabel = selectedBranch?.name || hotelDetails.name;
+    const roomLabel = selectedRoom ? selectedRoom.name : "Sanctuary";
+    const totalDisplay = formatPrice(grandTotal);
+
+    const reservationPayload: WhatsAppReservationData = {
+      guestName: fullName.trim(),
+      guestEmail: email.trim(),
+      guestPhone: phone.trim(),
+      roomName: roomLabel,
+      roomTag: selectedRoom?.tag,
+      propertyName: propertyLabel,
+      checkIn: checkIn,
+      checkOut: checkOut,
+      duration: durationLabel,
+      guests: guests,
+      specialRequests: requests.trim(),
+      estimatedTotal: totalDisplay,
+    };
+
+    try {
+      // Send reservation request to hotel owner via EmailJS
+      await sendReservationEmail({
+        guest_name: fullName.trim(),
+        guest_email: email.trim(),
+        guest_phone: phone.trim(),
+        property_name: propertyLabel,
+        room_name: roomLabel,
+        check_in: checkIn,
+        check_out: checkOut,
+        duration: durationLabel,
+        guests: guests,
+        special_requests: requests.trim() || "None",
+        base_rate: `${formatPrice(basePrice)} x ${nights} (${formatPrice(baseTotal)})`,
+        gst: formatPrice(luxuryTax),
+        estimated_total: totalDisplay,
+        subject: `New Reservation Request — ${roomLabel} — ${checkIn}`,
+      });
+
+      // Switch to full-page confirmation view seamlessly
+      setBookingReference(generatedRef);
+      setSubmittedData(reservationPayload);
+      setIsSubmitted(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (err: unknown) {
+      console.error("Failed to send reservation request:", err);
+      setErrorMessage(
+        "Unable to submit your reservation request via email at this moment. You can also reach out to our concierge directly on WhatsApp."
+      );
+    } finally {
       setIsSubmitting(false);
-      setIsConfirmed(true);
-      // Generate realistic booking reference
-      const ref = "SR" + Math.floor(100000 + Math.random() * 900000);
-      setBookingReference(ref);
-    }, 2000);
+    }
   };
 
-  if (isConfirmed) {
+  // If request has been successfully submitted, render full-page luxury confirmation view
+  if (isSubmitted && submittedData) {
     return (
-      <div className="max-w-xl mx-auto px-6 text-center py-20 space-y-8">
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="w-20 h-20 bg-gold/10 border border-gold rounded-full flex items-center justify-center mx-auto text-gold"
-        >
-          <Check size={36} className="stroke-[1.5]" />
-        </motion.div>
-
-        <div className="space-y-4">
-          <span className="text-[10px] uppercase tracking-[0.25em] text-gold font-medium">
-            RESERVATION CONFIRMED
-          </span>
-          <h1 className="font-serif text-3xl md:text-5xl text-text-offwhite font-light tracking-wide leading-tight">
-            Welcome to Stillness.
-          </h1>
-          <p className="font-sans text-xs md:text-sm text-text-gray font-light leading-relaxed max-w-sm mx-auto">
-            Your booking at Rich Inn Palace has been registered. An invitation letter with details of your private airport transfer has been sent to your email.
-          </p>
-        </div>
-
-        {/* Confirmation Details Card */}
-        <div className="border border-border-dark bg-surface-dark/40 rounded-2xl p-6 text-left space-y-4 font-sans text-xs max-w-sm mx-auto">
-          <div className="flex justify-between border-b border-border-dark/40 pb-2">
-            <span className="text-text-gray/70">Booking Reference</span>
-            <span className="text-gold font-semibold tracking-wider">{bookingReference}</span>
-          </div>
-          <div className="flex justify-between border-b border-border-dark/40 pb-2">
-            <span className="text-text-gray/70">Sanctuary</span>
-            <span className="text-text-offwhite">{selectedRoom?.name}</span>
-          </div>
-          {selectedBranch && (
-            <div className="flex justify-between border-b border-border-dark/40 pb-2">
-              <span className="text-text-gray/70">Branch Location</span>
-              <span className="text-text-offwhite">{selectedBranch.name.split(" — ")[1] || selectedBranch.name}</span>
-            </div>
-          )}
-          <div className="flex justify-between border-b border-border-dark/40 pb-2">
-            <span className="text-text-gray/70">Dates</span>
-            <span className="text-text-offwhite">{checkIn} to {checkOut}</span>
-          </div>
-          <div className="flex justify-between pb-2">
-            <span className="text-text-gray/70">Guests</span>
-            <span className="text-text-offwhite">{guests} Adults</span>
-          </div>
-        </div>
-
-        <div className="pt-4">
-          <Link
-            href="/"
-            className="inline-block px-8 py-3.5 bg-gold text-bg-dark text-xs uppercase tracking-[0.2em] font-medium rounded-full hover:bg-gold-hover transition-colors"
-          >
-            Return to Sanctuary
-          </Link>
-        </div>
-      </div>
+      <ReservationConfirmationView
+        reservationData={submittedData}
+        bookingReference={bookingReference}
+        selectedRoom={selectedRoom}
+        basePriceFormatted={`${formatPrice(basePrice)} x ${nights}`}
+        taxFormatted={formatPrice(luxuryTax)}
+        onNewRequest={() => setIsSubmitted(false)}
+      />
     );
   }
 
@@ -183,7 +209,6 @@ function BookingContent() {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
       {/* Left Column: Form entry */}
       <div className="lg:col-span-7 space-y-8">
-        
         {/* Title */}
         <div className="space-y-2">
           <span className="text-[10px] md:text-xs uppercase tracking-[0.25em] text-gold font-medium block">
@@ -192,10 +217,43 @@ function BookingContent() {
           <h1 className="font-serif text-3xl md:text-4xl text-text-offwhite font-light tracking-wide">
             Reserve Your Stay
           </h1>
+          <p className="font-sans text-xs text-text-gray font-light leading-relaxed">
+            Submit your dates and preferences. Our reservation team will review availability and contact you promptly to finalize your stay.
+          </p>
         </div>
 
+        {/* Error Banner */}
+        {errorMessage && (
+          <div className="p-4 bg-red-950/40 border border-red-800/60 rounded-xl flex items-start space-x-3 text-red-300 text-xs">
+            <AlertCircle size={16} className="shrink-0 mt-0.5 text-red-400" />
+            <div className="space-y-2">
+              <p>{errorMessage}</p>
+              {selectedRoom && (
+                <a
+                  href={buildWhatsAppUrl({
+                    guestName: fullName || "Guest",
+                    roomName: selectedRoom.name,
+                    propertyName: selectedBranch?.name,
+                    checkIn: checkIn,
+                    checkOut: checkOut,
+                    duration: `${nights} nights`,
+                    guests: guests,
+                    specialRequests: requests,
+                    estimatedTotal: formatPrice(grandTotal),
+                  })}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center space-x-1.5 text-gold hover:underline font-medium text-[11px]"
+                >
+                  <MessageSquare size={12} />
+                  <span>Inquire via WhatsApp instead &rarr;</span>
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-6">
-          
           {/* Section 1: Dates & Sanctuary Selection */}
           <div className="bg-surface-dark/30 border border-border-dark/60 rounded-2xl p-6 space-y-4">
             <h3 className="text-xs uppercase tracking-[0.2em] text-gold font-medium mb-2">
@@ -270,7 +328,11 @@ function BookingContent() {
                 <input
                   type="date"
                   value={checkOut}
-                  min={checkIn ? getTomorrowString(0) : getTomorrowString(1)}
+                  min={checkIn ? (() => {
+                    const nextDay = new Date(checkIn);
+                    nextDay.setDate(nextDay.getDate() + 1);
+                    return nextDay.toISOString().split("T")[0];
+                  })() : getTomorrowString(1)}
                   onChange={(e) => setCheckOut(e.target.value)}
                   className="bg-bg-dark border border-border-dark rounded-lg p-3 text-xs text-text-offwhite font-sans focus:outline-none focus:border-gold transition-colors w-full [color-scheme:dark]"
                 />
@@ -284,7 +346,7 @@ function BookingContent() {
               </label>
               <select
                 value={guests}
-                onChange={(e) => setGuests(parseInt(e.target.value))}
+                onChange={(e) => setGuests(parseInt(e.target.value, 10))}
                 className="bg-bg-dark border border-border-dark rounded-lg p-3 text-xs text-text-offwhite font-sans focus:outline-none focus:border-gold transition-colors w-full cursor-pointer appearance-none"
               >
                 <option value="1">1 Guest</option>
@@ -293,7 +355,6 @@ function BookingContent() {
                 <option value="4">4 Guests</option>
               </select>
             </div>
-
           </div>
 
           {/* Section 2: Contact Information */}
@@ -319,7 +380,6 @@ function BookingContent() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              
               {/* Email Address */}
               <div className="flex flex-col space-y-1.5">
                 <label className="text-[9px] uppercase tracking-[0.2em] text-text-gray font-medium flex items-center">
@@ -351,7 +411,6 @@ function BookingContent() {
                   className="bg-bg-dark border border-border-dark rounded-lg p-3 text-xs text-text-offwhite font-sans focus:outline-none focus:border-gold transition-colors w-full placeholder-text-gray/30"
                 />
               </div>
-
             </div>
 
             {/* Special requests */}
@@ -362,15 +421,15 @@ function BookingContent() {
               <textarea
                 value={requests}
                 onChange={(e) => setRequests(e.target.value)}
+                maxLength={1000}
                 placeholder="Prefer lavender scent in turndown, or airport greeting transfers details..."
                 rows={3}
                 className="bg-bg-dark border border-border-dark rounded-lg p-3 text-xs text-text-offwhite font-sans focus:outline-none focus:border-gold transition-colors w-full placeholder-text-gray/30 resize-none"
               />
             </div>
-
           </div>
 
-          {/* Checkout Button */}
+          {/* Primary Action Button */}
           <button
             type="submit"
             disabled={isSubmitting || !fullName || !email || !phone}
@@ -379,13 +438,12 @@ function BookingContent() {
             {isSubmitting ? (
               <>
                 <Loader2 size={14} className="animate-spin" />
-                <span>Registering Details...</span>
+                <span>SUBMITTING REQUEST...</span>
               </>
             ) : (
-              <span>Complete Sanctuary Booking</span>
+              <span>REQUEST RESERVATION</span>
             )}
           </button>
-
         </form>
       </div>
 
@@ -475,16 +533,7 @@ function BookingContent() {
             </div>
           </div>
 
-          {/* Policies Badge */}
-          <div className="border border-border-dark/80 bg-surface-dark/20 rounded-2xl p-5 space-y-3.5 text-[10px] tracking-wide text-text-gray leading-relaxed font-sans font-light">
-            <div className="flex items-center space-x-2 text-gold">
-              <ShieldCheck size={14} className="stroke-[1.75]" />
-              <span className="uppercase font-medium tracking-[0.15em]">Cancellation Policy</span>
-            </div>
-            <p>
-              Complimentary cancellation or modifications allowed up to 72 hours prior to arrival date. Check-in is after 14:00. Late check-out is subject to unhurried room availability.
-            </p>
-          </div>
+          {/* Policies Badge removed */}
         </div>
       </div>
     </div>
